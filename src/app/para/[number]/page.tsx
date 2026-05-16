@@ -62,30 +62,34 @@ export default function ParaDetails({ params }: { params: Promise<{ number: stri
       <Navbar />
       
       {/* Premium Para Header */}
-      <section className="bg-background relative overflow-hidden pt-40 pb-16">
-        <div className="container px-4 mx-auto text-center">
+      <section className="pt-40 pb-16 relative overflow-hidden bg-primary dark:bg-emerald-950">
+        <div className="absolute inset-0 premium-gradient-green opacity-90 pointer-events-none" />
+        <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/islamic-art.png')]" />
+
+        <div className="container px-4 mx-auto relative z-10 text-center text-white">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            className="max-w-3xl mx-auto"
           >
             <div className="flex items-center justify-center gap-6 mb-8">
-              <div className="hidden md:block h-px w-20 bg-border" />
-              <div className="bg-primary text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-emerald-900/20">
+              <div className="hidden md:block h-px w-20 bg-white/20" />
+              <div className="bg-white/10 text-gold px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-sm backdrop-blur-md border border-white/20">
                 Para {number}
               </div>
-              <div className="hidden md:block h-px w-20 bg-border" />
+              <div className="hidden md:block h-px w-20 bg-white/20" />
             </div>
 
-            <h1 className="text-6xl md:text-8xl font-black text-foreground dark:text-primary mb-2 tracking-tight">
-              Juz {number}
+            <h1 className="text-6xl md:text-8xl font-black mb-2 tracking-tight">
+              Juz <span className="text-gold">{number}</span>
             </h1>
-            <p className="text-muted-foreground font-bold uppercase tracking-[0.3em] text-xs mb-10">
+            <p className="text-white/80 font-bold uppercase tracking-[0.3em] text-xs mb-10">
               The Noble Quran • Part {number}
             </p>
 
-            <div className="flex items-center justify-center gap-8 text-xs font-black uppercase tracking-widest text-muted-foreground/60 mb-12">
+            <div className="flex items-center justify-center gap-8 text-xs font-black uppercase tracking-widest text-white/60 mb-12">
               <div className="flex items-center gap-2">
-                <Book className="h-4 w-4 text-gold/50" />
+                <Book className="h-4 w-4 text-gold/80" />
                 <span>{ayahs.length} Ayahs</span>
               </div>
               <div className="flex items-center gap-2">
@@ -95,16 +99,16 @@ export default function ParaDetails({ params }: { params: Promise<{ number: stri
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <div className="flex items-center gap-3 bg-card p-2 rounded-2xl shadow-sm border border-border/50">
+              <div className="flex items-center gap-2 bg-white/10 p-2 rounded-full shadow-sm border border-white/20 backdrop-blur-md">
                 <Button 
                   variant={readingMode === 'card' ? 'default' : 'ghost'} 
                   size="sm" 
                   onClick={() => setReadingMode('card')}
                   className={cn(
-                    "rounded-xl gap-2 h-10 px-6 font-bold transition-all", 
+                    "rounded-full gap-2 h-10 px-6 font-bold transition-all", 
                     readingMode === 'card' 
-                      ? "bg-primary text-white shadow-lg shadow-emerald-900/20" 
-                      : "text-muted-foreground hover:bg-emerald-50 hover:text-primary"
+                      ? "bg-white text-primary shadow-lg" 
+                      : "text-white/70 hover:bg-white/10 hover:text-white"
                   )}
                 >
                   <LayoutGrid className="h-4 w-4" /> Card View
@@ -114,10 +118,10 @@ export default function ParaDetails({ params }: { params: Promise<{ number: stri
                   size="sm" 
                   onClick={() => setReadingMode('page')}
                   className={cn(
-                    "rounded-xl gap-2 h-10 px-6 font-bold transition-all", 
+                    "rounded-full gap-2 h-10 px-6 font-bold transition-all", 
                     readingMode === 'page' 
-                      ? "bg-primary text-white shadow-lg shadow-emerald-900/20" 
-                      : "text-muted-foreground hover:bg-emerald-50 hover:text-primary"
+                      ? "bg-white text-primary shadow-lg" 
+                      : "text-white/70 hover:bg-white/10 hover:text-white"
                   )}
                 >
                   <Type className="h-4 w-4" /> Page View

@@ -17,12 +17,27 @@ export default function BookmarksPage() {
     <main className="min-h-screen pb-32">
       <Navbar />
       
-      <section className="bg-gold text-white py-16 text-center relative overflow-hidden">
+      {/* Premium Hero Section */}
+      <section className="pt-36 pb-20 relative overflow-hidden bg-primary dark:bg-emerald-950">
+        <div className="absolute inset-0 premium-gradient-green opacity-90 pointer-events-none" />
         <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/islamic-art.png')]" />
-        <div className="container px-4 mx-auto relative z-10">
-          <Bookmark className="h-16 w-16 mx-auto mb-4 opacity-50" />
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">Bookmarks</h1>
-          <p className="text-xl opacity-80">Marked ayahs for quick reference and study</p>
+        
+        <div className="container px-4 mx-auto relative z-10 text-center text-white">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-3xl mx-auto"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-gold font-bold text-sm mb-6 border border-white/20 shadow-sm backdrop-blur-md">
+              <Bookmark className="h-4 w-4" /> Saved Ayahs
+            </div>
+            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight">
+              Your <span className="text-gold">Bookmarks</span>
+            </h1>
+            <p className="text-xl text-white/80 mb-10 leading-relaxed">
+              Marked ayahs for quick reference and study, saved across sessions.
+            </p>
+          </motion.div>
         </div>
       </section>
 

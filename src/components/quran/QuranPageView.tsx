@@ -100,7 +100,7 @@ export const QuranPageView = ({ ayahs, surahName }: QuranPageViewProps) => {
           {/* Bismillah */}
           {(ayahs[0].surah?.number !== 9) && (
             <div className="mb-12">
-              <p className="font-quran text-5xl text-foreground drop-shadow-sm">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+              <p className="font-quran text-3xl md:text-5xl text-foreground drop-shadow-sm">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
             </div>
           )}
         </div>

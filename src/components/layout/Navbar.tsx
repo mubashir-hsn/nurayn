@@ -3,11 +3,10 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Menu, BookOpen } from "lucide-react";
+import { Menu, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Sidebar } from "./Sidebar";
-import { Input } from "@/components/ui/input";
 
 export const Navbar = () => {
   const pathname = usePathname();
@@ -24,7 +23,7 @@ export const Navbar = () => {
         {/* Left: Logo */}
         <div className="flex items-center gap-2">
           <Sheet>
-            <SheetTrigger 
+            <SheetTrigger
               render={
                 <Button variant="ghost" size="icon" className="md:hidden">
                   <Menu className="h-5 w-5" />
@@ -49,7 +48,6 @@ export const Navbar = () => {
         {/* Right: Navigation */}
         <div className="hidden md:flex items-center justify-end gap-10 ml-auto">
           {mounted && [
-            { label: "Home", href: "/" },
             { label: "Surah", href: "/surah" },
             { label: "Para", href: "/para" },
             { label: "Hadith", href: "/hadith" },

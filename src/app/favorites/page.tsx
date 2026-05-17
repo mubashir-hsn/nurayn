@@ -17,12 +17,27 @@ export default function FavoritesPage() {
     <main className="min-h-screen pb-32">
       <Navbar />
       
-      <section className="bg-red-500 text-white py-16 text-center relative overflow-hidden">
+      {/* Premium Hero Section */}
+      <section className="pt-36 pb-20 relative overflow-hidden bg-primary dark:bg-emerald-950">
+        <div className="absolute inset-0 premium-gradient-green opacity-90 pointer-events-none" />
         <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/islamic-art.png')]" />
-        <div className="container px-4 mx-auto relative z-10">
-          <Heart className="h-16 w-16 mx-auto mb-4 opacity-50" />
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">Favorite Ayahs</h1>
-          <p className="text-xl opacity-80">Your personally curated collection of divine verses</p>
+        
+        <div className="container px-4 mx-auto relative z-10 text-center text-white">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-3xl mx-auto"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-gold font-bold text-sm mb-6 border border-white/20 shadow-sm backdrop-blur-md">
+              <Heart className="h-4 w-4" /> Your Collection
+            </div>
+            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight">
+              Favorite <span className="text-gold">Ayahs</span>
+            </h1>
+            <p className="text-xl text-white/80 mb-10 leading-relaxed">
+              Your personally curated collection of divine verses, saved with love.
+            </p>
+          </motion.div>
         </div>
       </section>
 

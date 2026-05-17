@@ -144,19 +144,24 @@ export default function HomePage() {
           <div className="lg:col-span-9 space-y-8">
 
             {/* Prayer Times Bar (Lahore 2026) */}
-            <Card className="border-none shadow-sm rounded-[2rem] p-6 bg-card overflow-hidden">
-              <div className="flex flex-wrap items-center justify-between gap-6">
+            <Card className="border-none shadow-xl shadow-gold/20 rounded-[2rem] p-6 md:p-8 overflow-hidden relative" style={{ background: 'linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold))' }}>
+              {/* Decorative Elements */}
+              <div className="absolute inset-0 opacity-[0.06] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/islamic-art.png')]" />
+              <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+
+              <div className="relative z-10 flex flex-wrap items-center justify-between gap-6">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 bg-emerald-50 rounded-xl">
-                    <MapPin className="h-5 w-5 text-emerald-600" />
+                  <div className="p-2.5 bg-emerald-700 rounded-xl shadow-lg shadow-emerald-900/20">
+                    <MapPin className="h-5 w-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] leading-none mb-1">Lahore, PK</p>
-                    <p className="text-sm font-bold text-foreground dark:text-primary">{dateStr}</p>
+                    <p className="text-[10px] font-black text-emerald-900/60 uppercase tracking-[0.2em] leading-none mb-1">Lahore, PK</p>
+                    <p className="text-sm font-bold text-emerald-900">{dateStr}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-8 md:gap-14 flex-1 justify-center">
+                <div className="flex items-center gap-6 md:gap-14 flex-1 justify-center">
                   {prayerTimes ? [
                     { label: "Fajr", time: prayerTimes.Fajr },
                     { label: "Dhuhr", time: prayerTimes.Dhuhr },
@@ -165,19 +170,19 @@ export default function HomePage() {
                     { label: "Isha", time: prayerTimes.Isha },
                   ].map((p) => (
                     <div key={p.label} className="text-center group">
-                      <p className="text-[10px] text-muted-foreground uppercase mb-1 font-bold tracking-wider">{p.label}</p>
-                      <p className="text-sm font-black text-foreground dark:text-primary">
+                      <p className="text-[10px] text-black/60 uppercase mb-1 font-bold tracking-wider">{p.label}</p>
+                      <p className="text-sm font-black text-emerald-900">
                         {p.time}
                       </p>
                     </div>
                   )) : Array.from({ length: 5 }).map((_, i) => (
-                    <Skeleton key={i} className="h-10 w-16" />
+                    <Skeleton key={i} className="h-10 w-16 bg-white/20" />
                   ))}
                 </div>
 
                 <div className="hidden xl:flex flex-col items-end">
-                  <p className="text-[10px] font-black text-gold uppercase tracking-[0.2em] mb-1">Status</p>
-                  <p className="text-sm font-bold text-foreground dark:text-primary">All Times Updated</p>
+                  <p className="text-[10px] font-black text-emerald-800 uppercase tracking-[0.2em] mb-1">✦ Live</p>
+                  <p className="text-sm font-bold text-black/70">All Times Updated</p>
                 </div>
               </div>
             </Card>

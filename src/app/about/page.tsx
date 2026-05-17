@@ -10,12 +10,12 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-background pb-32">
       <Navbar />
-      
+
       {/* Premium Header */}
       <section className="bg-dark-green text-white pt-40 pb-20 relative overflow-hidden">
         <div className="absolute inset-0 premium-gradient-green opacity-90" />
         <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/islamic-art.png')]" />
-        
+
         <div className="container px-4 mx-auto relative z-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -24,7 +24,7 @@ export default function AboutPage() {
             <div className="h-20 w-20 bg-white/10 rounded-[2.5rem] backdrop-blur-md flex items-center justify-center mx-auto mb-8 border border-white/20">
               <Sparkles className="h-10 w-10 text-gold" />
             </div>
-            <h1 className="text-5xl md:text-7xl font-black text-white mb-4 tracking-tight">About Al-Nur</h1>
+            <h1 className="text-5xl md:text-7xl font-black text-white mb-4 tracking-tight">About <span className="text-gold">Al-Nur</span></h1>
             <p className="text-xl text-white/70 max-w-lg mx-auto font-medium">
               Illuminating the path of guidance through technology and devotion.
             </p>
@@ -34,7 +34,7 @@ export default function AboutPage() {
 
       <div className="container px-4 mx-auto py-20">
         <div className="max-w-4xl mx-auto space-y-24">
-          
+
           {/* Mission Section */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -55,7 +55,7 @@ export default function AboutPage() {
               <h2 className="text-4xl font-black text-foreground">Core Principles</h2>
               <p className="text-muted-foreground font-medium mt-2">The foundation of every feature we build.</p>
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
               {[
                 { title: "Authenticity", desc: "Sourced from verified repositories like Al-Quran Cloud for maximum accuracy.", icon: ShieldCheck },

@@ -215,17 +215,17 @@ export default function SettingsPage() {
             </Card>
 
             {/* Danger Zone */}
-            <Card className="border-none shadow-sm rounded-[2.5rem] bg-red-50/30 overflow-hidden border border-red-100">
+            <Card className="border-none shadow-sm rounded-[2.5rem] bg-red-500/5 dark:bg-red-950/10 overflow-hidden border border-red-100 dark:border-red-950/30">
               <CardHeader className="p-8 pb-0">
-                <CardTitle className="text-lg font-black text-red-600 flex items-center gap-3">
-                  <div className="h-8 w-8 bg-red-50 text-red-600 rounded-lg flex items-center justify-center">
+                <CardTitle className="text-lg font-black text-red-600 dark:text-red-500 flex items-center gap-3">
+                  <div className="h-8 w-8 bg-red-100 dark:bg-red-950/40 text-red-600 dark:text-red-400 rounded-lg flex items-center justify-center">
                     <Trash2 className="h-4 w-4" />
                   </div>
                   Danger Zone
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-8">
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-card rounded-3xl border border-red-100 shadow-sm">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-card dark:bg-[#031510]/40 rounded-3xl border border-red-100/50 dark:border-red-950/20 shadow-sm">
                   <div className="space-y-1 text-center sm:text-left">
                     <Label className="font-bold text-foreground dark:text-primary">Clear Local Data</Label>
                     <p className="text-xs text-muted-foreground">Deletes all favorites, bookmarks, and local progress</p>

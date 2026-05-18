@@ -42,15 +42,28 @@ export default function PrayerTimesPage() {
     <main className="min-h-screen pb-20">
       <Navbar />
       
-      <section className="bg-primary-green text-white py-16 text-center relative overflow-hidden">
+      {/* Premium Prayer Times Hero */}
+      <section className="pt-36 pb-20 relative overflow-hidden bg-primary dark:bg-emerald-950">
+        <div className="absolute inset-0 premium-gradient-green opacity-95 pointer-events-none" />
         <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/islamic-art.png')]" />
-        <div className="container px-4 mx-auto relative z-10">
-          <Clock className="h-16 w-16 mx-auto mb-4 opacity-50" />
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">Prayer Times</h1>
-          <div className="flex items-center justify-center gap-2 text-xl opacity-80">
-            <MapPin className="h-5 w-5" />
-            <span>{location}</span>
-          </div>
+        
+        <div className="container px-4 mx-auto relative z-10 text-center text-white">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-3xl mx-auto"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-gold font-bold text-sm mb-6 border border-white/20 shadow-sm backdrop-blur-md">
+              <Clock className="h-4 w-4 text-gold animate-pulse" /> Daily Salah Schedule
+            </div>
+            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight">
+              Prayer <span className="text-gold">Times</span>
+            </h1>
+            <div className="flex items-center justify-center gap-2 text-lg sm:text-xl text-white/80 font-semibold tracking-wide">
+              <MapPin className="h-5 w-5 text-gold" />
+              <span>{location}</span>
+            </div>
+          </motion.div>
         </div>
       </section>
 

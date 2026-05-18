@@ -132,16 +132,16 @@ export default function ParaDetails({ params }: { params: Promise<{ number: stri
         </div>
       </section>
 
-      <div className="container px-4 mx-auto py-12">
+      <div className="container px-3 sm:px-4 mx-auto py-6 sm:py-12">
         <div className="max-w-4xl mx-auto space-y-8">
           {loading ? (
             Array.from({ length: 5 }).map((_, i) => (
-              <Skeleton key={i} className="h-60 w-full rounded-3xl" />
+              <Skeleton key={i} className="h-60 w-full rounded-3xl animate-pulse" />
             ))
           ) : (
             <>
               {readingMode === 'card' && (
-                <div className="flex items-center justify-between mb-8 bg-card shadow-sm p-5 rounded-3xl border border-border/50">
+                <div className="flex items-center justify-between mb-8 bg-card shadow-sm p-4 sm:p-5 rounded-3xl border border-border/50">
                   <div className="flex items-center gap-4">
                     <div className="h-10 w-10 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl flex items-center justify-center">
                       <Book className="h-5 w-5 text-primary" />
@@ -151,13 +151,13 @@ export default function ParaDetails({ params }: { params: Promise<{ number: stri
                       <p className="font-bold text-sm">Ayahs {(currentPage - 1) * ITEMS_PER_PAGE + 1} - {Math.min(currentPage * ITEMS_PER_PAGE, ayahs.length)}</p>
                     </div>
                   </div>
-                  <div className="bg-primary/5 text-primary px-4 py-2 rounded-xl border border-primary/10">
-                     <span className="text-xs font-black uppercase tracking-widest">Page {currentPage} of {totalPages}</span>
+                  <div className="bg-primary/5 text-primary px-3 sm:px-4 py-2 rounded-xl border border-primary/10">
+                     <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest">Page {currentPage}/{totalPages}</span>
                   </div>
                 </div>
               )}
 
-              <div className="space-y-8">
+              <div className="space-y-3 sm:space-y-8">
                 {readingMode === 'card' ? (
                   <>
                     {currentAyahs.map((ayah) => (
@@ -168,7 +168,7 @@ export default function ParaDetails({ params }: { params: Promise<{ number: stri
                     {totalPages > 1 && (
                       <div className="mt-16 py-12 border-t flex justify-center">
                         <Pagination>
-                          <PaginationContent>
+                          <PaginationContent className="flex-wrap justify-center gap-1">
                             <PaginationItem>
                               <PaginationPrevious 
                                 href="#" 
@@ -184,7 +184,7 @@ export default function ParaDetails({ params }: { params: Promise<{ number: stri
                                 (page >= currentPage - 1 && page <= currentPage + 1)
                               ) {
                                 return (
-                                  <PaginationItem key={page}>
+                                  <PaginationItem key={page} className={cn(currentPage !== page && "hidden sm:inline-block")}>
                                     <PaginationLink 
                                       href="#" 
                                       onClick={(e) => { e.preventDefault(); handlePageChange(page)}}
@@ -202,7 +202,7 @@ export default function ParaDetails({ params }: { params: Promise<{ number: stri
                               
                               if (page === currentPage - 2 || page === currentPage + 2) {
                                 return (
-                                  <PaginationItem key={page}>
+                                  <PaginationItem key={page} className="hidden sm:inline-block">
                                     <PaginationEllipsis />
                                   </PaginationItem>
                                 );

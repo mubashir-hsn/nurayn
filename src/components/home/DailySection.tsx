@@ -64,7 +64,7 @@ export const DailySection = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <Card className="border-none shadow-sm rounded-[2.5rem] bg-card overflow-hidden p-8 md:p-12 relative">
+        <Card className="border-none shadow-sm rounded-3xl sm:rounded-[2.5rem] bg-card overflow-hidden p-4 sm:p-8 md:p-12 relative">
           {/* Favorite Toast Notification */}
           <AnimatePresence>
             {favToast && (
@@ -79,24 +79,24 @@ export const DailySection = () => {
             )}
           </AnimatePresence>
 
-          <CardContent className="p-0 space-y-8">
-            <div className="flex justify-between items-start">
-              <div className="space-y-3">
-                <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-4 py-2 rounded-full uppercase tracking-widest">
+          <CardContent className="p-0 space-y-6 sm:space-y-8">
+            <div className="flex justify-between items-start gap-4">
+              <div className="space-y-2 sm:space-y-3">
+                <span className="text-[9px] sm:text-[10px] font-black text-emerald-600 bg-emerald-50 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full uppercase tracking-widest">
                   Ayah of the Day
                 </span>
-                <h2 className="text-2xl font-bold text-foreground dark:text-primary pt-2">
+                <h2 className="text-lg sm:text-2xl font-bold text-foreground dark:text-primary pt-1 sm:pt-2">
                   {dailyAyah ? `Surah ${dailyAyah.surah?.englishName} • Ayah ${dailyAyah.numberInSurah}` : "Loading Ayah..."}
                 </h2>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-1.5 sm:gap-2 shrink-0">
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={handleToggleFavorite}
                   disabled={!dailyAyah}
                   className={cn(
-                    "rounded-full border h-10 w-10 transition-all duration-300",
+                    "rounded-full border h-9 w-9 sm:h-10 sm:w-10 transition-all duration-300",
                     isAyahFavorited
                       ? "bg-red-50 border-red-300 text-red-500 hover:bg-red-100 hover:text-red-600 hover:border-red-400 scale-110"
                       : "border-border text-muted-foreground hover:text-gold hover:border-gold"
@@ -111,7 +111,7 @@ export const DailySection = () => {
                     <Heart className={cn("h-4 w-4", isAyahFavorited && "fill-current")} />
                   </motion.div>
                 </Button>
-                <Button variant="ghost" size="icon" className="rounded-full border border-border h-10 w-10 text-muted-foreground hover:text-gold hover:border-gold">
+                <Button variant="ghost" size="icon" className="rounded-full border border-border h-9 w-9 sm:h-10 sm:w-10 text-muted-foreground hover:text-gold hover:border-gold">
                   <Share2 className="h-4 w-4" />
                 </Button>
               </div>
@@ -119,15 +119,15 @@ export const DailySection = () => {
 
             {loading ? (
               <div className="space-y-4 text-center">
-                <Skeleton className="h-16 w-3/4 mx-auto" />
-                <Skeleton className="h-8 w-1/2 mx-auto" />
+                <Skeleton className="h-16 w-3/4 mx-auto animate-pulse" />
+                <Skeleton className="h-8 w-1/2 mx-auto animate-pulse" />
               </div>
             ) : dailyAyah ? (
-              <div className="space-y-8 text-center">
-                <p className="font-quran text-2xl md:text-4xl text-gold leading-[1.6]" dir="rtl">
+              <div className="space-y-6 sm:space-y-8 text-center">
+                <p className="font-quran text-xl sm:text-2xl md:text-4xl text-gold leading-relaxed" dir="rtl">
                   {dailyAyah.text}
                 </p>
-                <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto italic leading-relaxed">
+                <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto italic leading-relaxed">
                   "| {dailyAyah.translation} |"
                 </p>
               </div>
@@ -142,17 +142,17 @@ export const DailySection = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <Card className="border-none shadow-sm rounded-[2.5rem] bg-card overflow-hidden p-8 md:p-12 relative">
+        <Card className="border-none shadow-sm rounded-3xl sm:rounded-[2.5rem] bg-card overflow-hidden p-4 sm:p-8 md:p-12 relative">
           <div className="absolute top-0 right-0 p-8 opacity-5">
             <MessageSquare className="h-24 w-24 text-emerald-900" />
           </div>
-          <CardContent className="p-0 space-y-8 relative z-10">
+          <CardContent className="p-0 space-y-6 sm:space-y-8 relative z-10">
             <div className="flex justify-between items-start">
-              <div className="space-y-3">
-                <span className="text-[10px] font-black text-gold bg-gold/10 px-4 py-2 rounded-full uppercase tracking-widest">
+              <div className="space-y-2 sm:space-y-3">
+                <span className="text-[9px] sm:text-[10px] font-black text-gold bg-gold/10 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full uppercase tracking-widest">
                   Hadith of the Day
                 </span>
-                <h2 className="text-2xl pt-2 font-bold text-foreground dark:text-primary">
+                <h2 className="text-lg sm:text-2xl pt-1 sm:pt-2 font-bold text-foreground dark:text-primary">
                   {dailyHadith ? dailyHadith.bookName : "Loading Hadith..."}
                 </h2>
               </div>
@@ -160,21 +160,21 @@ export const DailySection = () => {
 
             {loading ? (
               <div className="space-y-4">
-                <Skeleton className="h-16 w-full" />
-                <Skeleton className="h-8 w-3/4" />
+                <Skeleton className="h-16 w-full animate-pulse" />
+                <Skeleton className="h-8 w-3/4 animate-pulse" />
               </div>
             ) : dailyHadith ? (
-              <div className="space-y-8">
-                <p className="font-quran text-xl md:text-2xl text-right text-emerald-800 dark:text-emerald-300 leading-relaxed" dir="rtl">
+              <div className="space-y-6 sm:space-y-8">
+                <p className="font-quran text-base sm:text-xl md:text-2xl text-right text-emerald-800 dark:text-emerald-300 leading-relaxed" dir="rtl">
                   {dailyHadith.hadithArabic}
                 </p>
-                <div className="pt-6 border-t border-emerald-900/10">
-                  <p className="text-base text-emerald-900/70 dark:text-emerald-100/60 leading-relaxed italic">
+                <div className="pt-4 sm:pt-6 border-t border-emerald-900/10">
+                  <p className="text-sm sm:text-base text-emerald-900/70 dark:text-emerald-100/60 leading-relaxed italic">
                     "{dailyHadith.hadithEnglish}"
                   </p>
-                  <div className="mt-6 flex justify-end">
+                  <div className="mt-4 sm:mt-6 flex justify-end">
                     <Link href="/hadith">
-                      <Button variant="ghost" className="text-gold font-bold hover:bg-gold/10 gap-2 h-10 px-4 text-sm">
+                      <Button variant="ghost" className="text-gold font-bold hover:bg-gold/10 gap-2 h-9 sm:h-10 px-3 sm:px-4 text-xs sm:text-sm">
                         Read Hadith Library <ArrowRight className="h-4 w-4" />
                       </Button>
                     </Link>

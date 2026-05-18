@@ -105,14 +105,14 @@ export default function HadithPage() {
         </div>
       </section>
 
-      <div className="container px-4 mx-auto py-20">
+      <div className="container px-3 sm:px-4 mx-auto py-10 sm:py-20">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-40 gap-4">
             <Loader2 className="h-12 w-12 text-gold animate-spin" />
             <p className="text-xl font-bold text-muted-foreground">Loading authentic traditions...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
             <AnimatePresence mode="popLayout">
               {currentHadiths.map((hadith) => (
                 <HadithCard key={hadith.id} hadith={hadith} />
@@ -124,7 +124,7 @@ export default function HadithPage() {
         {!loading && filteredHadiths.length > itemsPerPage && (
           <div className="mt-20">
             <Pagination>
-              <PaginationContent>
+              <PaginationContent className="flex-wrap justify-center gap-1">
                 <PaginationItem>
                   <PaginationPrevious
                     onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
@@ -144,7 +144,7 @@ export default function HadithPage() {
                     (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
                   ) {
                     return (
-                      <PaginationItem key={pageNum}>
+                      <PaginationItem key={pageNum} className={cn(currentPage !== pageNum && "hidden sm:inline-block")}>
                         <PaginationLink
                           onClick={() => setCurrentPage(pageNum)}
                           isActive={currentPage === pageNum}
@@ -162,7 +162,7 @@ export default function HadithPage() {
                   // Show ellipsis
                   if (pageNum === currentPage - 2 || pageNum === currentPage + 2) {
                     return (
-                      <PaginationItem key={pageNum}>
+                      <PaginationItem key={pageNum} className="hidden sm:inline-block">
                         <PaginationEllipsis className="text-gold/50" />
                       </PaginationItem>
                     );

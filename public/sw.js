@@ -104,9 +104,16 @@ self.addEventListener('fetch', (event) => {
             return cachedResponse;
           }
           
-          // If it's a page route, return the shell `/` page as a fallback
+          // If it's a page route, only return cached response or homepage shell for /
           if (event.request.headers.get('accept')?.includes('text/html')) {
-            return caches.match('/');
+            return caches.match(event.request).then((res) => {
+              if (res) return res;
+              if (requestUrl.pathname === '/' || requestUrl.pathname === '') {
+                return caches.match('/');
+              }
+              // Let the network fetch error propagate so dynamic page components can render IndexedDB offline data
+              throw new Error("Page not in cache");
+            });
           }
 
           // Return an offline response for JSON requests

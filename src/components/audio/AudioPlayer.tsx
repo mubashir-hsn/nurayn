@@ -19,6 +19,7 @@ import { Slider } from "@/components/ui/slider";
 import { useAudioStore } from "@/store/useAudioStore";
 import { useSettingsStore } from "@/store/useSettingsStore";
 import { cn } from "@/lib/utils";
+import { getOfflineAudio } from "@/lib/indexedDB";
 
 export const AudioPlayer = () => {
   const { 
@@ -38,12 +39,34 @@ export const AudioPlayer = () => {
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
-    if (currentAyah?.audio && audioRef.current) {
-      audioRef.current.src = currentAyah.audio;
-      if (isPlaying) {
-        audioRef.current.play().catch(e => console.log("Play interrupted:", e));
+    let resolvedUrl = "";
+    const loadAudio = async () => {
+      if (currentAyah && audioRef.current) {
+        let audioSrc = currentAyah.audio || "";
+        
+        // Resolve offline audio blob if available in IndexedDB
+        if (currentAyah.surah?.number) {
+          const offlineAudio = await getOfflineAudio(currentAyah.surah.number, currentAyah.numberInSurah);
+          if (offlineAudio) {
+            audioSrc = offlineAudio;
+            resolvedUrl = offlineAudio;
+          }
+        }
+        
+        audioRef.current.src = audioSrc;
+        if (isPlaying) {
+          audioRef.current.play().catch(e => console.log("Play interrupted:", e));
+        }
       }
-    }
+    };
+    
+    loadAudio();
+    
+    return () => {
+      if (resolvedUrl && resolvedUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(resolvedUrl);
+      }
+    };
   }, [currentAyah]);
 
   useEffect(() => {

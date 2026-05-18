@@ -85,11 +85,11 @@ export default function HadithDetailPage({ params }: { params: Promise<{ id: str
             <div className="hidden md:block h-px w-20 bg-white/20" />
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-black text-gold mb-4 tracking-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-gold mb-4 tracking-tight px-2">
             {hadith.header}
           </h1>
           {hadith.chapterName && (
-            <h2 className="font-poppins text-xl md:text-2xl text-white/80 mb-8">
+            <h2 className="font-poppins text-sm sm:text-xl md:text-2xl text-white/85 mb-8 px-4 leading-relaxed">
               Chapter: {hadith.chapterName}
             </h2>
           )}
@@ -104,48 +104,48 @@ export default function HadithDetailPage({ params }: { params: Promise<{ id: str
         </div>
       </section>
 
-      <div className="container px-4 mx-auto py-12">
+      <div className="container px-3 sm:px-4 mx-auto py-6 sm:py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="max-w-5xl mx-auto"
         >
-          <Card className="premium-card bg-[#FDFBF7] dark:bg-[#04241B] border-[#E5E0D8] dark:border-primary/20 shadow-[0_20px_60px_rgba(0,0,0,0.08)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.4)] rounded-[2rem] overflow-hidden relative">
+          <Card className="premium-card bg-[#FDFBF7] dark:bg-[#04241B] border-x-0 sm:border border-[#E5E0D8] dark:border-primary/20 shadow-none sm:shadow-[0_20px_60px_rgba(0,0,0,0.08)] dark:sm:shadow-[0_20px_60px_rgba(0,0,0,0.4)] rounded-none sm:rounded-[2rem] overflow-hidden relative">
             <div className="absolute inset-0 opacity-[0.04] dark:opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
-            <div className="absolute inset-5 md:inset-8 border-[3px] border-double border-gold/40 dark:border-gold/20 rounded-xl pointer-events-none z-20" />
+            <div className="absolute inset-3 sm:inset-5 md:inset-8 border-[3px] border-double border-gold/40 dark:border-gold/20 rounded-xl pointer-events-none z-20" />
 
-            <CardContent className="p-10 md:p-16 lg:p-24 relative z-10 flex flex-col gap-12">
+            <CardContent className="p-6 px-5 sm:p-10 md:p-16 lg:p-24 relative z-10 flex flex-col gap-6 sm:gap-12">
               {/* Actions Header */}
-              <div className="flex justify-end gap-2 border-b border-gold/10 pb-6">
-                <Button variant="ghost" size="icon" onClick={copyHadith} className="h-12 w-12 rounded-xl hover:bg-gold/10 hover:text-gold transition-colors">
-                  <Copy className="h-5 w-5" />
+              <div className="flex justify-end gap-2 border-b border-gold/10 pb-4 sm:pb-6 relative z-30">
+                <Button variant="ghost" size="icon" onClick={copyHadith} className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl hover:bg-gold/10 hover:text-gold transition-colors">
+                  <Copy className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
-                <Button variant="ghost" size="icon" className="h-12 w-12 rounded-xl hover:bg-gold/10 hover:text-gold transition-colors">
-                  <Share2 className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl hover:bg-gold/10 hover:text-gold transition-colors">
+                  <Share2 className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </div>
 
               {/* Arabic */}
               {hadith.hadithArabic && (
-                <p className="font-quran text-2xl md:text-3xl lg:text-4xl text-right text-primary-green leading-[1.8] md:leading-loose antialiased" dir="rtl">
+                <p className="font-quran text-base sm:text-2xl md:text-3xl lg:text-4xl text-right text-primary-green leading-[1.8] md:leading-loose antialiased" dir="rtl">
                   {hadith.hadithArabic}
                 </p>
               )}
 
-              <div className="space-y-12 pt-12 border-t border-gold/10 relative">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-6 py-1 bg-[#FDFBF7] dark:bg-[#04241B] text-[10px] md:text-xs font-black text-gold uppercase tracking-[0.3em] border border-gold/20 rounded-full z-10">
+              <div className="space-y-6 sm:space-y-12 pt-6 sm:pt-12 border-t border-gold/10 relative">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 sm:px-6 py-1 bg-[#FDFBF7] dark:bg-[#04241B] text-[8px] sm:text-xs font-black text-gold uppercase tracking-[0.3em] border border-gold/20 rounded-full z-10">
                   Translations
                 </div>
 
                 {/* Urdu */}
                 {hadith.hadithUrdu && (
-                  <p className="text-2xl md:text-3xl lg:text-4xl text-right text-dark-green font-medium leading-relaxed" dir="rtl">
+                  <p className="text-base sm:text-2xl md:text-3xl lg:text-4xl text-right text-dark-green font-medium leading-relaxed" dir="rtl">
                     {hadith.hadithUrdu}
                   </p>
                 )}
 
                 {/* English */}
-                <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed font-medium">
+                <p className="text-sm sm:text-xl md:text-2xl text-muted-foreground leading-relaxed font-medium">
                   "{hadith.hadithEnglish}"
                 </p>
               </div>

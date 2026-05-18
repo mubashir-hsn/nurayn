@@ -17,7 +17,7 @@ const fetchJson = async (url: string) => {
 };
 
 export const hadithService = {
-  async getHadiths(edition = 'eng-sahihbukhari'): Promise<any[]> {
+  async getHadiths(edition = 'eng-bukhari'): Promise<any[]> {
     let data = await fetchJson(`${BASE_URL}/${edition}.json`);
     if (!data) data = await fetchJson(`${BASE_URL}/eng-bukhari.json`);
     return data?.hadiths || [];
@@ -51,7 +51,7 @@ export const hadithService = {
         }
       }
 
-      const fallback = await fetchJson(`${BASE_URL}/eng-sahihbukhari.json`);
+      const fallback = await fetchJson(`${BASE_URL}/eng-bukhari.json`);
       if (fallback && fallback.hadiths) {
         const fallbackHadith = fallback.hadiths.find((h: any) => h.hadithnumber === targetId);
         if (fallbackHadith) {
@@ -98,7 +98,7 @@ export const hadithService = {
       }
 
       // Fallback to single lang if multi-lang fails
-      const fallback = await fetchJson(`${BASE_URL}/eng-sahihbukhari.json`);
+      const fallback = await fetchJson(`${BASE_URL}/eng-bukhari.json`);
       if (fallback && fallback.hadiths[randomIndex]) {
         return {
           id: fallback.hadiths[randomIndex].hadithnumber,

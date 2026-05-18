@@ -21,7 +21,7 @@ interface SettingsState {
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
-      fontSize: 24,
+      fontSize: 20,
       translationEnabled: true,
       urduEnabled: true,
       reciter: 'ar.alafasy',

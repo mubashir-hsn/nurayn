@@ -131,7 +131,7 @@ export default function SurahPage() {
         {!loading && filteredSurahs.length > itemsPerPage && (
           <div className="mt-20">
             <Pagination>
-              <PaginationContent>
+              <PaginationContent className="flex-wrap justify-center gap-1">
                 <PaginationItem>
                   <PaginationPrevious 
                     onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
@@ -150,7 +150,7 @@ export default function SurahPage() {
                     (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
                   ) {
                     return (
-                      <PaginationItem key={pageNum}>
+                      <PaginationItem key={pageNum} className={cn(currentPage !== pageNum && "hidden sm:inline-block")}>
                         <PaginationLink 
                           onClick={() => setCurrentPage(pageNum)}
                           isActive={currentPage === pageNum}
@@ -167,7 +167,7 @@ export default function SurahPage() {
                   
                   if (pageNum === currentPage - 2 || pageNum === currentPage + 2) {
                     return (
-                      <PaginationItem key={pageNum}>
+                      <PaginationItem key={pageNum} className="hidden sm:inline-block">
                         <PaginationEllipsis className="text-gold/50" />
                       </PaginationItem>
                     );

@@ -5,24 +5,24 @@ import { Navbar } from "@/components/layout/Navbar";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 import { AyahCard } from "@/components/quran/AyahCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Heart, 
-  Bookmark, 
-  Library as LibraryIcon, 
-  Search, 
-  Sparkles, 
-  Download, 
-  Trash2, 
-  HardDrive, 
-  RefreshCw, 
-  Volume2, 
-  AlertTriangle, 
-  BookOpen, 
-  CheckCircle2, 
-  Loader2, 
-  Play, 
-  Wifi, 
-  WifiOff, 
+import {
+  Heart,
+  Bookmark,
+  Library as LibraryIcon,
+  Search,
+  Sparkles,
+  Download,
+  Trash2,
+  HardDrive,
+  RefreshCw,
+  Volume2,
+  AlertTriangle,
+  BookOpen,
+  CheckCircle2,
+  Loader2,
+  Play,
+  Wifi,
+  WifiOff,
   HelpCircle,
   FileText
 } from "lucide-react";
@@ -31,12 +31,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { usePWAStore } from "@/store/usePWAStore";
 import { quranService } from "@/services/quranService";
-import { 
-  getOfflineMetadata, 
-  deleteOfflineSurah, 
-  saveOfflineSurah, 
-  getStorageUsage, 
-  OfflineSurahMetadata 
+import {
+  getOfflineMetadata,
+  deleteOfflineSurah,
+  saveOfflineSurah,
+  getStorageUsage,
+  OfflineSurahMetadata
 } from "@/lib/indexedDB";
 import { toast } from "sonner";
 import { Surah } from "@/types";
@@ -52,13 +52,13 @@ export default function LibraryPage() {
   const [surahsList, setSurahsList] = useState<Surah[]>([]);
   const [storage, setStorage] = useState<{ used: number; quota?: number; percentage?: number }>({ used: 0 });
   const [loadingList, setLoadingList] = useState(true);
-  
+
   // Download Settings & Configurations
   const [includeAudio, setIncludeAudio] = useState(false);
   const [audioQuality, setAudioQuality] = useState<'standard' | 'low'>('standard');
   const [searchQuery, setSearchQuery] = useState("");
   const [offlineSearchQuery, setOfflineSearchQuery] = useState("");
-  
+
   // Active Downloading Progress States
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [downloadProgress, setDownloadProgress] = useState(0);
@@ -69,7 +69,7 @@ export default function LibraryPage() {
 
   useEffect(() => {
     setMounted(true);
-    
+
     // Check URL parameters for tab
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -136,21 +136,21 @@ export default function LibraryPage() {
 
       // 1. Fetch Surah detail from API (Text, English, Urdu translations)
       const surahDetail = await quranService.getSurahDetail(surahNum);
-      
+
       setDownloadProgress(25);
       setDownloadStatusText("Processing ayah text layout...");
 
       // 2. Fetch Audio recitations if requested
       const audioBlobs: { [key: number]: Blob } = {};
-      
+
       if (includeAudio) {
         setDownloadStatusText(`Fetching audio files (0/${surahDetail.ayahs.length})...`);
-        
+
         // Loop through all ayahs to download audio Blobs
         for (let i = 0; i < surahDetail.ayahs.length; i++) {
           const ayah = surahDetail.ayahs[i];
           const audioUrl = ayah.audio;
-          
+
           if (audioUrl) {
             // Adjust quality if low is selected (standard is ar.alafasy which is good)
             let fetchUrl = audioUrl;
@@ -166,7 +166,7 @@ export default function LibraryPage() {
               // Continue and save whatever audio works, no hard crash
             }
           }
-          
+
           // Scaled progress: 25% starting + 70% range for audios
           const progressStep = Math.round(25 + ((i + 1) / surahDetail.ayahs.length) * 70);
           setDownloadProgress(progressStep);
@@ -185,9 +185,9 @@ export default function LibraryPage() {
 
       // 3. Save Surah data, layouts, and audios locally to IndexedDB
       await saveOfflineSurah(surahDetail, includeAudio, includeAudio ? audioBlobs : undefined);
-      
+
       setDownloadProgress(100);
-      
+
       toast.success(`Surah ${surahDetail.englishName} downloaded successfully!`, {
         description: `Now available for full offline reading${includeAudio ? ' and audio recitation' : ''}.`
       });
@@ -226,7 +226,7 @@ export default function LibraryPage() {
       toast.error("Online connection is required for batch downloads");
       return;
     }
-    
+
     setIsDownloadingAll(true);
     toast.info("Starting sequential download of all 114 Surahs", {
       description: "This may take several minutes depending on your connection."
@@ -252,7 +252,7 @@ export default function LibraryPage() {
   const filteredSurahs = useMemo(() => {
     return surahsList.filter(s => {
       const matchesSearch = s.englishName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            s.name.includes(searchQuery);
+        s.name.includes(searchQuery);
       return matchesSearch;
     });
   }, [surahsList, searchQuery]);
@@ -283,7 +283,7 @@ export default function LibraryPage() {
       // Read all downloaded surahs from DB
       const { initDB } = await import("@/lib/indexedDB");
       const db = await initDB();
-      
+
       const transaction = db.transaction('surahs', 'readonly');
       const store = transaction.objectStore('surahs');
       const request = store.getAll();
@@ -327,12 +327,12 @@ export default function LibraryPage() {
   return (
     <main className="min-h-screen bg-[#FAFAFC] dark:bg-[#031510] pb-32 transition-colors duration-500">
       <Navbar />
-      
+
       {/* Premium Header Section */}
       <section className="pt-36 pb-20 relative overflow-hidden bg-primary dark:bg-emerald-950">
         <div className="absolute inset-0 premium-gradient-green opacity-95 pointer-events-none" />
         <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/islamic-art.png')]" />
-        
+
         <div className="container px-4 mx-auto relative z-10 text-center text-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -365,35 +365,37 @@ export default function LibraryPage() {
 
       <div className="container px-4 mx-auto py-16">
         <Tabs defaultValue="favorites" value={activeTab} className="w-full" onValueChange={handleTabChange}>
-          <div className="flex justify-center mb-16">
-            <TabsList className="bg-card shadow-xl shadow-emerald-900/5 p-2 h-16 rounded-[1.5rem] border border-border/50 backdrop-blur-md">
-              <TabsTrigger 
-                value="favorites" 
-                className="rounded-xl px-8 md:px-12 h-full data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-900/20 transition-all duration-300 font-black text-xs uppercase tracking-widest gap-2"
-              >
-                <Heart className="h-4 w-4" /> Favorites
-              </TabsTrigger>
-              <TabsTrigger 
-                value="bookmarks" 
-                className="rounded-xl px-8 md:px-12 h-full data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-900/20 transition-all duration-300 font-black text-xs uppercase tracking-widest gap-2"
-              >
-                <Bookmark className="h-4 w-4" /> Bookmarks
-              </TabsTrigger>
-              <TabsTrigger 
-                value="downloads" 
-                className="rounded-xl px-8 md:px-12 h-full data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-900/20 transition-all duration-300 font-black text-xs uppercase tracking-widest gap-2"
-              >
-                <Download className="h-4 w-4 animate-bounce" /> Downloads
-              </TabsTrigger>
-            </TabsList>
+          <div className="flex justify-center mb-14 sm:mb-16 w-full px-4">
+            <div className="w-full max-w-lg overflow-x-auto scrollbar-none flex justify-start sm:justify-center">
+              <TabsList className="bg-emerald-950/5 dark:bg-emerald-950/40 p-1.5 h-14 sm:h-16 rounded-[1.2rem] sm:rounded-[1.5rem] border border-emerald-900/10 dark:border-emerald-900/30 backdrop-blur-md flex flex-row flex-nowrap gap-1.5 w-full min-w-[340px] sm:min-w-0 shadow-inner">
+                <TabsTrigger
+                  value="favorites"
+                  className="group rounded-xl sm:rounded-[1.1rem] px-4 sm:px-6 py-2 sm:py-0 h-11 sm:h-full flex-1 data-[state=active]:bg-primary dark:data-[state=active]:bg-emerald-800 data-[state=active]:text-white text-muted-foreground dark:text-emerald-300/70 data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-900/10 dark:data-[state=active]:shadow-emerald-950/30 transition-all duration-300 font-black text-xs uppercase tracking-wider sm:tracking-widest gap-2 whitespace-nowrap hover:text-emerald-600 dark:hover:text-white"
+                >
+                  <Heart className="h-4 w-4 shrink-0 transition-all duration-300 group-data-[state=active]:text-[#EAB308] group-data-[state=active]:fill-[#EAB308]" /> Favorites
+                </TabsTrigger>
+                <TabsTrigger
+                  value="bookmarks"
+                  className="group rounded-xl sm:rounded-[1.1rem] px-4 sm:px-6 py-2 sm:py-0 h-11 sm:h-full flex-1 data-[state=active]:bg-primary dark:data-[state=active]:bg-emerald-800 data-[state=active]:text-white text-muted-foreground dark:text-emerald-300/70 data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-900/10 dark:data-[state=active]:shadow-emerald-950/30 transition-all duration-300 font-black text-xs uppercase tracking-wider sm:tracking-widest gap-2 whitespace-nowrap hover:text-emerald-600 dark:hover:text-white"
+                >
+                  <Bookmark className="h-4 w-4 shrink-0 transition-all duration-300 group-data-[state=active]:text-[#EAB308] group-data-[state=active]:fill-[#EAB308]" /> Bookmarks
+                </TabsTrigger>
+                <TabsTrigger
+                  value="downloads"
+                  className="group rounded-xl sm:rounded-[1.1rem] px-4 sm:px-6 py-2 sm:py-0 h-11 sm:h-full flex-1 data-[state=active]:bg-primary dark:data-[state=active]:bg-emerald-800 data-[state=active]:text-white text-muted-foreground dark:text-emerald-300/70 data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-900/10 dark:data-[state=active]:shadow-emerald-950/30 transition-all duration-300 font-black text-xs uppercase tracking-wider sm:tracking-widest gap-2 whitespace-nowrap hover:text-emerald-600 dark:hover:text-white"
+                >
+                  <Download className="h-4 w-4 shrink-0 transition-all duration-300 group-data-[state=active]:text-[#EAB308] group-data-[state=active]:fill-[#EAB308]" /> Downloads
+                </TabsTrigger>
+              </TabsList>
+            </div>
           </div>
 
           <AnimatePresence mode="wait">
-            
+
             {/* 1. FAVORITES TAB */}
             <TabsContent key="tab-favorites" value="favorites" className="focus-visible:outline-none">
               {favorites.length > 0 ? (
-                <motion.div 
+                <motion.div
                   key="fav-list"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -414,7 +416,7 @@ export default function LibraryPage() {
                   ))}
                 </motion.div>
               ) : (
-                <motion.div 
+                <motion.div
                   key="fav-empty"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -437,7 +439,7 @@ export default function LibraryPage() {
             {/* 2. BOOKMARKS TAB */}
             <TabsContent key="tab-bookmarks" value="bookmarks" className="focus-visible:outline-none">
               {bookmarks.length > 0 ? (
-                <motion.div 
+                <motion.div
                   key="bookmark-list"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -458,7 +460,7 @@ export default function LibraryPage() {
                   ))}
                 </motion.div>
               ) : (
-                <motion.div 
+                <motion.div
                   key="bookmark-empty"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -480,17 +482,17 @@ export default function LibraryPage() {
 
             {/* 3. DOWNLOADS (DOWNLOAD MANAGER) TAB */}
             <TabsContent key="tab-downloads" value="downloads" className="focus-visible:outline-none">
-              <motion.div 
+              <motion.div
                 key="downloads-content"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="max-w-6xl mx-auto space-y-12"
               >
-                
+
                 {/* Storage & Manager Header Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  
+
                   {/* Gauge 1: Storage Quota Card */}
                   <div className="bg-card p-6 rounded-3xl border shadow-sm flex flex-col justify-between relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-bl-full pointer-events-none" />
@@ -506,9 +508,9 @@ export default function LibraryPage() {
                       {storage.quota ? (
                         <div>
                           <div className="w-full h-2 bg-secondary rounded-full overflow-hidden mb-1.5">
-                            <div 
-                              className="h-full bg-emerald-500 transition-all duration-500" 
-                              style={{ width: `${storage.percentage}%` }} 
+                            <div
+                              className="h-full bg-emerald-500 transition-all duration-500"
+                              style={{ width: `${storage.percentage}%` }}
                             />
                           </div>
                           <div className="flex justify-between text-[10px] text-muted-foreground font-bold">
@@ -535,17 +537,17 @@ export default function LibraryPage() {
                     <div className="absolute top-0 right-0 w-24 h-24 bg-gold/5 rounded-bl-full pointer-events-none" />
                     <div>
                       <h4 className="font-extrabold text-muted-foreground text-xs uppercase tracking-wider mb-4">Download Configurations</h4>
-                      
+
                       {/* Audio Download toggle */}
                       <label className="flex items-center justify-between gap-2 p-2.5 rounded-2xl bg-secondary/30 border border-border/50 cursor-pointer hover:bg-secondary/50 transition-colors mb-3">
                         <div className="flex items-center gap-2">
                           <Volume2 className="h-4.5 w-4.5 text-gold" />
                           <span className="text-xs font-bold text-foreground">Download Audio Recitation</span>
                         </div>
-                        <input 
-                          type="checkbox" 
-                          checked={includeAudio} 
-                          onChange={(e) => setIncludeAudio(e.target.checked)} 
+                        <input
+                          type="checkbox"
+                          checked={includeAudio}
+                          onChange={(e) => setIncludeAudio(e.target.checked)}
                           className="h-4 w-4 rounded accent-emerald-600 cursor-pointer"
                         />
                       </label>
@@ -555,17 +557,17 @@ export default function LibraryPage() {
                         <div className="flex items-center justify-between text-xs p-1 rounded-xl bg-secondary/50">
                           <span className="font-bold pl-2 text-muted-foreground text-[10px] uppercase">Reciter Quality:</span>
                           <div className="flex gap-1">
-                            <Button 
-                              variant={audioQuality === 'standard' ? 'default' : 'ghost'} 
-                              size="sm" 
+                            <Button
+                              variant={audioQuality === 'standard' ? 'default' : 'ghost'}
+                              size="sm"
                               onClick={() => setAudioQuality('standard')}
                               className="h-7 text-[10px] font-black rounded-lg px-3 py-0 bg-primary"
                             >
                               Standard (128kbps)
                             </Button>
-                            <Button 
-                              variant={audioQuality === 'low' ? 'default' : 'ghost'} 
-                              size="sm" 
+                            <Button
+                              variant={audioQuality === 'low' ? 'default' : 'ghost'}
+                              size="sm"
                               onClick={() => setAudioQuality('low')}
                               className="h-7 text-[10px] font-black rounded-lg px-3 py-0"
                             >
@@ -586,8 +588,8 @@ export default function LibraryPage() {
                         Download all remaining {114 - downloadedSurahs.length} chapters sequentially for absolute 100% offline completion.
                       </p>
                     </div>
-                    <Button 
-                      onClick={handleDownloadAll} 
+                    <Button
+                      onClick={handleDownloadAll}
                       disabled={isDownloadingAll || downloadedSurahs.length === 114 || !isOnline}
                       className="w-full h-11 bg-primary text-white hover:bg-emerald-700 rounded-xl font-black text-xs uppercase tracking-widest shadow-md flex items-center justify-center gap-2"
                     >
@@ -706,7 +708,7 @@ export default function LibraryPage() {
                             const metadata = downloadedSurahs.find(d => d.number === surah.number);
                             const isDownloaded = !!metadata;
                             const isDownloading = downloadingId === surah.number;
-                            
+
                             // Estimate text+audio size based on total verses
                             // Standard average verse text size = 0.5KB. Audio size = 80KB.
                             const estimatedTextSize = surah.numberOfAyahs * 500;
@@ -715,12 +717,12 @@ export default function LibraryPage() {
 
                             return (
                               <tr key={surah.number} className="hover:bg-secondary/15 transition-all duration-200 text-sm">
-                                
+
                                 {/* Number */}
                                 <td className="py-4 px-6 font-bold text-muted-foreground">
                                   {surah.number}
                                 </td>
-                                
+
                                 {/* Name */}
                                 <td className="py-4 px-6">
                                   <div className="flex items-center gap-3">
@@ -731,12 +733,12 @@ export default function LibraryPage() {
                                     <span className="font-arabic text-xl text-primary-green ml-auto pr-6">{surah.name}</span>
                                   </div>
                                 </td>
-                                
+
                                 {/* Verses */}
                                 <td className="py-4 px-6 font-bold text-muted-foreground">
                                   {surah.numberOfAyahs} Ayahs
                                 </td>
-                                
+
                                 {/* Size */}
                                 <td className="py-4 px-6 text-muted-foreground font-semibold">
                                   {isDownloaded ? (
@@ -745,7 +747,7 @@ export default function LibraryPage() {
                                     <span className="text-[10px] uppercase tracking-wide text-muted-foreground/60">~ {sizeEstimateText}</span>
                                   )}
                                 </td>
-                                
+
                                 {/* Status badge */}
                                 <td className="py-4 px-6">
                                   {isDownloading ? (
@@ -755,9 +757,9 @@ export default function LibraryPage() {
                                         <span className="animate-pulse">Loading...</span>
                                       </div>
                                       <div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden">
-                                        <div 
-                                          className="h-full bg-emerald-500 transition-all duration-300" 
-                                          style={{ width: `${downloadProgress}%` }} 
+                                        <div
+                                          className="h-full bg-emerald-500 transition-all duration-300"
+                                          style={{ width: `${downloadProgress}%` }}
                                         />
                                       </div>
                                     </div>
@@ -771,16 +773,16 @@ export default function LibraryPage() {
                                     </div>
                                   )}
                                 </td>
-                                
+
                                 {/* Actions */}
                                 <td className="py-4 px-6 text-right">
                                   <div className="flex items-center justify-end gap-2">
-                                    
+
                                     {isDownloaded && (
-                                      <Button 
-                                        asChild 
-                                        variant="default" 
-                                        size="sm" 
+                                      <Button
+                                        asChild
+                                        variant="default"
+                                        size="sm"
                                         className="h-9 px-4 rounded-xl bg-gold hover:bg-gold/90 text-black font-black uppercase text-[10px] tracking-wider shadow-sm"
                                       >
                                         <a href={`/surah/${surah.number}`}>Read Offline</a>
@@ -788,11 +790,11 @@ export default function LibraryPage() {
                                     )}
 
                                     {!isDownloaded && !isDownloading && (
-                                      <Button 
+                                      <Button
                                         onClick={() => handleDownloadSurah(surah.number)}
                                         disabled={!isOnline}
-                                        variant="outline" 
-                                        size="sm" 
+                                        variant="outline"
+                                        size="sm"
                                         className="h-9 w-9 p-0 rounded-xl text-primary border-primary/20 hover:bg-primary/10 shadow-sm"
                                       >
                                         <Download className="h-4 w-4" />
@@ -801,20 +803,20 @@ export default function LibraryPage() {
 
                                     {isDownloaded && !isDownloading && (
                                       <>
-                                        <Button 
+                                        <Button
                                           onClick={() => handleDownloadSurah(surah.number)}
                                           disabled={!isOnline}
-                                          variant="outline" 
-                                          size="sm" 
+                                          variant="outline"
+                                          size="sm"
                                           className="h-9 w-9 p-0 rounded-xl text-amber-500 border-amber-500/20 hover:bg-amber-500/10 shadow-sm"
                                           title="Re-download Surah"
                                         >
                                           <RefreshCw className="h-4 w-4" />
                                         </Button>
-                                        <Button 
+                                        <Button
                                           onClick={() => handleDeleteSurah(surah.number, surah.englishName)}
-                                          variant="outline" 
-                                          size="sm" 
+                                          variant="outline"
+                                          size="sm"
                                           className="h-9 w-9 p-0 rounded-xl text-rose-500 border-rose-500/20 hover:bg-rose-500/10 shadow-sm"
                                           title="Delete Surah from device"
                                         >
@@ -858,12 +860,12 @@ export default function LibraryPage() {
 
 // Arrow icon helper
 const ArrowRight = ({ className }: { className?: string }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    fill="none" 
-    viewBox="0 0 24 24" 
-    strokeWidth={2.5} 
-    stroke="currentColor" 
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={2.5}
+    stroke="currentColor"
     className={className}
   >
     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />

@@ -175,29 +175,29 @@ export default function SurahDetails({ params }: { params: Promise<{ number: str
         </div>
       </section>
 
-      <div className="container px-4 mx-auto py-12">
+      <div className="container px-3 sm:px-4 mx-auto py-6 sm:py-12">
         <Tabs defaultValue="reading" className="w-full">
-          <div className="flex justify-center mb-12">
+          <div className="flex justify-center mb-8 sm:mb-12">
             <TabsList className="bg-card shadow-lg shadow-emerald-900/5 p-2 h-16 rounded-[1.5rem] border border-border/50 backdrop-blur-md">
               <TabsTrigger 
                 value="reading" 
-                className="rounded-xl px-12 h-full data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-900/20 transition-all duration-300 font-black text-xs uppercase tracking-widest gap-2"
+                className="rounded-xl px-6 sm:px-12 h-full data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-900/20 transition-all duration-300 font-black text-[10px] sm:text-xs uppercase tracking-widest gap-2"
               >
-                <Book className="h-4 w-4 mr-2" /> Reading
+                <Book className="h-4 w-4 sm:mr-2" /> Reading
               </TabsTrigger>
               <TabsTrigger 
                 value="info" 
-                className="rounded-xl px-12 h-full data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-900/20 transition-all duration-300 font-black text-xs uppercase tracking-widest gap-2"
+                className="rounded-xl px-6 sm:px-12 h-full data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-900/20 transition-all duration-300 font-black text-[10px] sm:text-xs uppercase tracking-widest gap-2"
               >
-                <Info className="h-4 w-4 mr-2" /> Details
+                <Info className="h-4 w-4 sm:mr-2" /> Details
               </TabsTrigger>
             </TabsList>
           </div>
 
-          <TabsContent value="reading" className="space-y-12 focus-visible:outline-none">
+          <TabsContent value="reading" className="space-y-6 sm:space-y-12 focus-visible:outline-none">
             {readingMode === 'card' ? (
               <>
-                <div className="grid grid-cols-1 gap-8">
+                <div className="grid grid-cols-1 gap-3 sm:gap-8">
                   {currentAyahs.map((ayah) => (
                     <AyahCard key={ayah.number} ayah={ayah} surahName={surah.englishName} />
                   ))}
@@ -205,9 +205,9 @@ export default function SurahDetails({ params }: { params: Promise<{ number: str
 
                 {/* Pagination (Only for Card View) */}
                 {totalPages > 1 && (
-                  <div className="mt-16 py-8 border-t flex justify-center">
+                  <div className="mt-16 py-8 border-t flex justify-center w-full overflow-hidden">
                     <Pagination>
-                      <PaginationContent>
+                      <PaginationContent className="flex-wrap justify-center gap-1">
                         <PaginationItem>
                           <PaginationPrevious 
                             onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
@@ -218,7 +218,7 @@ export default function SurahDetails({ params }: { params: Promise<{ number: str
                         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
                           if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
                             return (
-                              <PaginationItem key={page}>
+                              <PaginationItem key={page} className={cn(currentPage !== page && "hidden sm:inline-block")}>
                                 <PaginationLink 
                                   onClick={() => handlePageChange(page)}
                                   isActive={currentPage === page}
@@ -230,7 +230,11 @@ export default function SurahDetails({ params }: { params: Promise<{ number: str
                             );
                           }
                           if (page === currentPage - 2 || page === currentPage + 2) {
-                            return <PaginationItem key={page}><PaginationEllipsis /></PaginationItem>;
+                            return (
+                              <PaginationItem key={page} className="hidden sm:inline-block">
+                                <PaginationEllipsis />
+                              </PaginationItem>
+                            );
                           }
                           return null;
                         })}

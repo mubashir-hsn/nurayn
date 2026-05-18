@@ -19,7 +19,8 @@ import {
   Volume2,
   FileText,
   HelpCircle,
-  Maximize2
+  Maximize2,
+  Loader2
 } from "lucide-react";
 import { getOfflineAudio } from "@/lib/indexedDB";
 import { toast } from "sonner";
@@ -40,9 +41,14 @@ export const QuranPageView = ({ ayahs, surah }: QuranPageViewProps) => {
   const [mounted, setMounted] = useState(false);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [progressRestored, setProgressRestored] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   // 1. DYNAMIC MUSHAF PAGE ALLOCATOR
@@ -108,7 +114,7 @@ export const QuranPageView = ({ ayahs, surah }: QuranPageViewProps) => {
   if (!mounted || !hasHydrated) {
     return (
       <div className="h-96 flex flex-col items-center justify-center gap-3">
-        <LoaderIcon className="h-8 w-8 text-primary animate-spin" />
+        <Loader2 className="h-8 w-8 text-primary animate-spin" />
         <p className="text-muted-foreground text-xs font-bold animate-pulse">Assembling Mushaf Pages...</p>
       </div>
     );
@@ -273,7 +279,8 @@ export const QuranPageView = ({ ayahs, surah }: QuranPageViewProps) => {
   };
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 md:px-12">
+    <div className="relative max-w-5xl mx-auto px-1 sm:px-4 md:px-12">
+
 
       {/* Outer Container containing page content & floating sidebar buttons */}
       <div className="flex items-center justify-between gap-2 md:gap-6">
@@ -293,7 +300,7 @@ export const QuranPageView = ({ ayahs, surah }: QuranPageViewProps) => {
         </Button>
 
         {/* Real Book Page Container */}
-        <div className="flex-1">
+        <div className="flex-1 w-full min-w-0">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentPageIndex}
@@ -301,29 +308,29 @@ export const QuranPageView = ({ ayahs, surah }: QuranPageViewProps) => {
               animate={{ opacity: 1, rotateY: 0, scale: 1 }}
               exit={{ opacity: 0, rotateY: 15, scale: 0.98 }}
               transition={{ duration: 0.35, ease: "easeInOut" }}
-              className="relative w-full min-h-[600px] bg-[#FDFBF7] dark:bg-[#032219] shadow-[0_20px_60px_rgba(0,0,0,0.06)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.45)] rounded-2xl p-6 md:p-14 border border-[#EBE6DD] dark:border-primary/20 overflow-hidden transition-colors duration-500"
+              className="relative w-full min-h-[450px] sm:min-h-[600px] bg-[#FDFBF7] dark:bg-[#032219] shadow-none rounded-lg p-5 px-4 sm:p-8 md:p-14 border border-[#EBE6DD] dark:border-primary/20 overflow-hidden transition-colors duration-500"
             >
 
               {/* Paper Fibers Texture overlay */}
               <div className="absolute inset-0 opacity-[0.04] dark:opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
 
               {/* Spine Shadow Crease Effect (realistic open book visual) */}
-              <div className="absolute top-0 bottom-0 left-0 w-8 bg-linear-to-r from-black/5 dark:from-black/45 to-transparent pointer-events-none z-20" />
-              <div className="absolute top-0 bottom-0 right-0 w-8 bg-linear-to-l from-black/5 dark:from-black/45 to-transparent pointer-events-none z-20" />
+              <div className="absolute top-0 bottom-0 left-0 w-3 sm:w-8 bg-linear-to-r from-black/5 dark:from-black/45 to-transparent pointer-events-none z-20" />
+              <div className="absolute top-0 bottom-0 right-0 w-3 sm:w-8 bg-linear-to-l from-black/5 dark:from-black/45 to-transparent pointer-events-none z-20" />
 
               {/* Double Classic Islamic Borders */}
-              <div className="absolute inset-4 md:inset-6 border-[3px] border-double border-gold/40 dark:border-gold/25 rounded-xl pointer-events-none z-20" />
-              <div className="absolute inset-[22px] md:inset-[32px] border border-gold/20 dark:border-gold/15 rounded-lg pointer-events-none z-20" />
+              <div className="absolute inset-2 sm:inset-4 md:inset-6 border-[3px] border-double border-gold/30 dark:border-gold/25 rounded-xl pointer-events-none z-20" />
+              <div className="absolute inset-3.5 sm:inset-[22px] md:inset-[32px] border border-gold/15 dark:border-gold/10 rounded-lg pointer-events-none z-20" />
 
               {/* Header: Controls, Bookmarks, and Info */}
-              <div className="relative z-30 flex items-center justify-between mb-8 pb-4 border-b border-gold/10">
+              <div className="relative z-30 flex items-center justify-between mb-4 sm:mb-8 pb-3 border-b border-gold/10 gap-2">
 
                 {/* Font control pill */}
-                <div className="flex items-center gap-0.5 bg-secondary/80 dark:bg-black/20 backdrop-blur-sm p-1 rounded-xl border border-gold/10">
+                <div className="flex items-center gap-0.5 bg-secondary/80 dark:bg-black/20 backdrop-blur-sm p-0.5 sm:p-1 rounded-lg sm:rounded-xl border border-gold/10">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-7 w-7 rounded-lg text-gold hover:bg-gold/10 text-[10px] font-black"
+                    className="h-6 w-6 sm:h-7 sm:w-7 rounded text-gold hover:bg-gold/10 text-[9px] sm:text-[10px] font-black"
                     onClick={() => setFontSize(Math.max(16, fontSize - 2))}
                   >
                     A-
@@ -331,7 +338,7 @@ export const QuranPageView = ({ ayahs, surah }: QuranPageViewProps) => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-7 w-7 rounded-lg text-gold hover:bg-gold/10 text-[10px] font-black"
+                    className="h-6 w-6 sm:h-7 sm:w-7 rounded text-gold hover:bg-gold/10 text-[9px] sm:text-[10px] font-black"
                     onClick={() => setFontSize(Math.min(48, fontSize + 2))}
                   >
                     A+
@@ -339,8 +346,8 @@ export const QuranPageView = ({ ayahs, surah }: QuranPageViewProps) => {
                 </div>
 
                 {/* Surah Name & Header Title */}
-                <div className="text-center">
-                  <span className="font-extrabold text-[10px] uppercase tracking-widest text-gold drop-shadow-sm">
+                <div className="text-center flex-1 min-w-0 px-1">
+                  <span className="font-extrabold text-[8px] sm:text-[10px] uppercase tracking-widest text-gold drop-shadow-sm truncate block">
                     {dynamicSurah?.englishName || "Juz Reading"} ({dynamicSurah?.name || ""})
                   </span>
                 </div>
@@ -351,17 +358,17 @@ export const QuranPageView = ({ ayahs, surah }: QuranPageViewProps) => {
                   size="icon"
                   onClick={handlePageBookmarkToggle}
                   className={cn(
-                    "h-8 w-8 rounded-lg hover:bg-gold/10",
+                    "h-7 w-7 sm:h-8 sm:w-8 rounded-lg hover:bg-gold/10",
                     isPageBookmarked ? "text-gold" : "text-muted-foreground/50 hover:text-gold"
                   )}
                   title="Bookmark current page"
                 >
-                  <Bookmark className="h-5 w-5 fill-current" />
+                  <Bookmark className="h-4.5 w-4.5 sm:h-5 sm:w-5 fill-current" />
                 </Button>
               </div>
 
               {/* MAIN CONTENT AREA: Arabic Verses */}
-              <div className="relative z-10 text-justify [text-align-last:right] leading-[2.6] md:leading-[3.0] mt-6" dir="rtl">
+              <div className="relative z-10 text-justify [text-align-last:right] leading-[2.8] sm:leading-[3.2] md:leading-[3.5] mt-4 sm:mt-6" dir="rtl">
                 {activePageAyahs.map((ayah) => {
                   const isActive = currentAyah?.number === ayah.number;
                   const isFirstAyah = ayah.numberInSurah === 1;
@@ -391,91 +398,93 @@ export const QuranPageView = ({ ayahs, surah }: QuranPageViewProps) => {
                   return (
                     <React.Fragment key={ayah.number}>
                       {isFirstAyah && ayahSurah && (
-                        <div className="block w-full text-center my-10 font-poppins select-none" dir="ltr">
+                        <div className="block w-full text-center my-6 sm:my-10 font-poppins select-none" dir="ltr">
                           {/* Premium Golden Islamic Border Surah Heading box */}
-                          <div className="relative py-5 px-8 rounded-3xl bg-emerald-950/5 dark:bg-emerald-950/30 border-2 border-gold/30 max-w-xl mx-auto overflow-hidden shadow-md">
+                          <div className="relative py-3 sm:py-5 px-4 sm:px-8 rounded-2xl sm:rounded-3xl bg-emerald-950/5 dark:bg-emerald-950/30 border border-gold/30 max-w-xl mx-auto overflow-hidden shadow-md">
                             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/islamic-art.png')]" />
-                            <div className="flex justify-between items-center gap-6">
-                              <span className="font-arabic text-2xl md:text-3xl text-primary-green drop-shadow-sm font-semibold">{ayahSurah.name}</span>
-                              <div className="flex flex-col text-center">
-                                <span className="font-black text-xs md:text-sm text-gold uppercase tracking-[0.15em]">Surah {ayahSurah.englishName}</span>
-                                <span className="text-[10px] text-muted-foreground font-extrabold uppercase mt-1 tracking-wider">
+                            <div className="flex justify-between items-center gap-3 sm:gap-6 w-full">
+                              <span className="font-arabic text-xl sm:text-2xl md:text-3xl text-primary-green drop-shadow-sm font-semibold">{ayahSurah.name}</span>
+                              <div className="hidden sm:flex flex-col text-center">
+                                <span className="font-black text-[10px] sm:text-xs md:text-sm text-gold uppercase tracking-[0.15em]">Surah {ayahSurah.englishName}</span>
+                                <span className="text-[8px] sm:text-[10px] text-muted-foreground font-extrabold uppercase mt-1 tracking-wider">
                                   {ayahSurah.revelationType} • {ayahSurah.numberOfAyahs} Verses
                                 </span>
                               </div>
-                              <span className="font-black text-xs text-primary bg-primary/10 px-3 py-1.5 rounded-xl border border-primary/20 shadow-inner">#{ayahSurah.number}</span>
+                              <span className="font-black text-[10px] sm:text-xs text-primary bg-primary/10 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl border border-primary/20 shadow-inner">#{ayahSurah.number}</span>
                             </div>
                           </div>
-                          
+
                           {/* Bismillah banner (skipped for Surah At-Tawbah #9) */}
                           {ayahSurah.number !== 9 && (
-                            <div className="mt-6 text-center">
-                              <p className="font-noto-naskh text-3xl md:text-4xl text-foreground drop-shadow-xs py-2 leading-relaxed">
+                            <div className="mt-4 sm:mt-6 text-center">
+                              <p className="font-noto-naskh text-xl sm:text-3xl md:text-4xl text-foreground drop-shadow-xs py-1 sm:py-2 leading-relaxed">
                                 بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
                               </p>
-                              <div className="w-16 h-px bg-gold/25 mx-auto mt-2" />
+                              <div className="w-12 sm:w-16 h-px bg-gold/25 mx-auto mt-2" />
                             </div>
                           )}
                         </div>
                       )}
-                      
-                      <span className="inline group">
-                      <span
-                        onClick={() => handleAyahClick(ayah)}
-                        className={cn(
-                          "font-noto-naskh transition-all duration-300 cursor-pointer rounded-lg px-2 py-1 inline leading-loose select-none",
-                          isActive
-                            ? "bg-gold/15 text-primary shadow-sm drop-shadow-[0_2px_4px_rgba(180,140,50,0.1)] border-b-2 border-gold"
-                            : "hover:bg-gold/5 hover:text-primary drop-shadow-sm"
-                        )}
-                        style={{ fontSize: `${fontSize}px` }}
-                      >
-                        {cleanText}
 
-                        {/* Ayah End Ornament */}
-                        <span className="inline-flex items-center justify-center mx-2.5 translate-y-1">
-                          <span className="relative flex items-center justify-center h-8 w-8">
-                            <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full text-gold/30 fill-none stroke-current stroke-6 group-hover:text-gold/50 transition-colors">
-                              <circle cx="50" cy="50" r="42" />
-                            </svg>
-                            <span className="relative font-inter text-[9px] font-black text-gold/80">{ayah.numberInSurah}</span>
+                      <span className="inline group">
+                        <span
+                          onClick={() => handleAyahClick(ayah)}
+                          className={cn(
+                            "font-noto-naskh transition-all duration-300 cursor-pointer rounded-lg px-1.5 py-0.5 inline leading-loose select-none",
+                            isActive
+                              ? "bg-gold/15 text-primary shadow-sm drop-shadow-[0_2px_4px_rgba(180,140,50,0.1)] border-b-2 border-gold"
+                              : "hover:bg-gold/5 hover:text-primary drop-shadow-sm"
+                          )}
+                          style={{
+                            fontSize: isMobile ? `${Math.max(15, fontSize - 4)}px` : `${fontSize}px`
+                          }}
+                        >
+                          {cleanText}
+
+                          {/* Ayah End Ornament */}
+                          <span className="inline-flex items-center justify-center mx-1 md:mx-2 translate-y-0.5 md:translate-y-1">
+                            <span className="relative flex items-center justify-center h-6 w-6 md:h-8 md:w-8">
+                              <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full text-gold/30 fill-none stroke-current stroke-6 group-hover:text-gold/50 transition-colors">
+                                <circle cx="50" cy="50" r="42" />
+                              </svg>
+                              <span className="relative font-inter text-[8px] md:text-[9px] font-black text-gold/80">{ayah.numberInSurah}</span>
+                            </span>
                           </span>
                         </span>
-                      </span>
 
-                      {/* Compact Inline translation container */}
-                      {(translationEnabled || urduEnabled) && isActive && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          className="block text-left font-poppins bg-gold/5 dark:bg-black/15 p-5 rounded-2xl my-4 border-l-3 border-gold"
-                          dir="ltr"
-                        >
-                          {urduEnabled && (
-                            <p className="text-lg text-emerald-800 dark:text-emerald-400 mb-2 text-right font-medium leading-relaxed font-noto-naskh" dir="rtl">
-                              {ayah.urduTranslation}
-                            </p>
-                          )}
-                          {translationEnabled && (
-                            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed font-medium">
-                              {ayah.translation}
-                            </p>
-                          )}
-                        </motion.div>
-                      )}
-                    </span>
-                  </React.Fragment>
+                        {/* Compact Inline translation container */}
+                        {(translationEnabled || urduEnabled) && isActive && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            className="block text-left font-poppins bg-gold/5 dark:bg-black/15 p-3 sm:p-5 rounded-xl sm:rounded-2xl my-3 sm:my-4 border-l-3 border-gold"
+                            dir="ltr"
+                          >
+                            {urduEnabled && (
+                              <p className="text-base sm:text-lg text-emerald-800 dark:text-emerald-400 mb-2 text-right font-medium leading-relaxed font-noto-naskh" dir="rtl">
+                                {ayah.urduTranslation}
+                              </p>
+                            )}
+                            {translationEnabled && (
+                              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-medium">
+                                {ayah.translation}
+                              </p>
+                            )}
+                          </motion.div>
+                        )}
+                      </span>
+                    </React.Fragment>
                   );
                 })}
               </div>
 
               {/* Bottom Footer: Page indicator and pagination summary */}
-              <div className="relative z-30 mt-16 pt-4 border-t border-gold/10 flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
-                <span>Verses {activePageAyahs[0]?.numberInSurah} - {activePageAyahs[activePageAyahs.length - 1]?.numberInSurah}</span>
-                <span className="bg-gold/10 text-gold px-4 py-1 rounded-full border border-gold/20 shadow-sm">
+              <div className="relative z-30 mt-8 sm:mt-16 pt-4 border-t border-gold/10 flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
+                <span className="order-2 sm:order-1">Verses {activePageAyahs[0]?.numberInSurah} - {activePageAyahs[activePageAyahs.length - 1]?.numberInSurah}</span>
+                <span className="order-1 sm:order-2 bg-gold/10 text-gold px-3 sm:px-4 py-1 rounded-full border border-gold/20 shadow-sm">
                   Page {currentPageIndex + 1} of {totalPages}
                 </span>
-                <span>Juz {activePageAyahs[0]?.juz}</span>
+                <span className="order-3">Juz {activePageAyahs[0]?.juz}</span>
               </div>
 
             </motion.div>
@@ -498,15 +507,15 @@ export const QuranPageView = ({ ayahs, surah }: QuranPageViewProps) => {
       </div>
 
       {/* Mobile Page Navigation Controls (displayed at bottom of screen for responsive scaling) */}
-      <div className="mt-8 flex justify-between items-center md:hidden bg-card p-3 rounded-2xl border shadow-md">
+      <div className="mt-8 flex justify-between items-center md:hidden bg-card p-2 sm:p-3 rounded-xl sm:rounded-2xl border shadow-md">
         <Button
           variant="outline"
           size="sm"
           onClick={handlePrevPage}
           disabled={currentPageIndex === 0 && (surah ? surah.number === 1 : (activePageAyahs[0]?.juz === 1))}
-          className="rounded-xl h-10 px-4 text-xs font-bold text-gold"
+          className="rounded-xl h-9 sm:h-10 px-3 sm:px-4 text-xs font-bold text-gold"
         >
-          <ChevronLeft className="h-4 w-4 mr-1 stroke-[2.5]" /> Prev Page
+          <ChevronLeft className="h-4 w-4 mr-1 stroke-[2.5]" /> Prev
         </Button>
         <span className="text-[10px] font-black text-muted-foreground">
           Page {currentPageIndex + 1} / {totalPages}
@@ -516,9 +525,9 @@ export const QuranPageView = ({ ayahs, surah }: QuranPageViewProps) => {
           size="sm"
           onClick={handleNextPage}
           disabled={currentPageIndex === totalPages - 1 && (surah ? surah.number === 114 : (activePageAyahs[0]?.juz === 30))}
-          className="rounded-xl h-10 px-4 text-xs font-bold text-gold"
+          className="rounded-xl h-9 sm:h-10 px-3 sm:px-4 text-xs font-bold text-gold"
         >
-          Next Page <ChevronRight className="h-4 w-4 ml-1 stroke-[2.5]" />
+          Next <ChevronRight className="h-4 w-4 ml-1 stroke-[2.5]" />
         </Button>
       </div>
     </div>

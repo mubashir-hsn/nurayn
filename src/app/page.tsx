@@ -158,7 +158,7 @@ export default function HomePage() {
                   }
                 </p>
                 <Link href={lastReadSession?.type === 'para' ? `/para/${lastReadSession?.number || 1}` : `/surah/${lastReadSession?.number || 1}`}>
-                  <Button className="w-full bg-[#EAB308] hover:bg-[#CA8A04] text-foreground dark:text-primary font-black rounded-xl h-14 shadow-lg shadow-yellow-600/20">
+                  <Button className="w-full bg-[#EAB308] hover:bg-[#CA8A04] text-black font-black rounded-xl h-14 shadow-lg shadow-yellow-600/20">
                     Resume Recitation
                   </Button>
                 </Link>

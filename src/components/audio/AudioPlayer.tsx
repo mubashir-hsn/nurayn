@@ -161,7 +161,10 @@ export const AudioPlayer = () => {
                   value={[volume * 100]} 
                   max={100} 
                   step={1} 
-                  onValueChange={(val) => setVolume(val[0] / 100)} 
+                  onValueChange={(val) => {
+                    const value = Array.isArray(val) ? val[0] : val;
+                    setVolume(value / 100);
+                  }}
                 />
               </div>
               <Button variant="ghost" size="icon" onClick={() => setCurrentAyah(null)}>

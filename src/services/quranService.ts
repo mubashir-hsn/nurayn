@@ -21,13 +21,37 @@ const fetchJson = async (url: string) => {
   }
 };
 
+import { getOfflineSurah } from '@/lib/indexedDB';
+
 export const quranService = {
   async getSurahs(): Promise<Surah[]> {
-    const data = await fetchJson(`${BASE_URL}/surah`);
-    return data.data;
+    try {
+      const data = await fetchJson(`${BASE_URL}/surah`);
+      if (data && data.data && typeof window !== 'undefined') {
+        localStorage.setItem('quran_surah_list', JSON.stringify(data.data));
+      }
+      return data.data;
+    } catch (error) {
+      console.warn("Failed to fetch surahs from network, trying cache:", error);
+      if (typeof window !== 'undefined') {
+        const cached = localStorage.getItem('quran_surah_list');
+        if (cached) {
+          return JSON.parse(cached);
+        }
+      }
+      throw error;
+    }
   },
 
   async getSurahDetail(number: number, englishEdition = 'en.sahih', urduEdition = 'ur.ahmedali', audioEdition = 'ar.alafasy'): Promise<SurahDetail> {
+    // 1. Try to load from offline IndexedDB first
+    const offlineSurah = await getOfflineSurah(number);
+    if (offlineSurah) {
+      console.log(`Loaded Surah #${number} (${offlineSurah.englishName}) from offline IndexedDB storage.`);
+      return offlineSurah;
+    }
+
+    // 2. Fallback to API if not offline or not downloaded
     const [arabic, english, urdu, audio] = await Promise.all([
       fetchJson(`${BASE_URL}/surah/${number}`),
       fetchJson(`${BASE_URL}/surah/${number}/${englishEdition}`),

@@ -140,90 +140,93 @@ export default function ParaDetails({ params }: { params: Promise<{ number: stri
             ))
           ) : (
             <>
-              <div className="flex items-center justify-between mb-8 bg-card shadow-sm p-5 rounded-3xl border border-border/50">
-                <div className="flex items-center gap-4">
-                  <div className="h-10 w-10 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl flex items-center justify-center">
-                    <Book className="h-5 w-5 text-primary" />
+              {readingMode === 'card' && (
+                <div className="flex items-center justify-between mb-8 bg-card shadow-sm p-5 rounded-3xl border border-border/50">
+                  <div className="flex items-center gap-4">
+                    <div className="h-10 w-10 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl flex items-center justify-center">
+                      <Book className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest leading-none mb-1">Current Progress</p>
+                      <p className="font-bold text-sm">Ayahs {(currentPage - 1) * ITEMS_PER_PAGE + 1} - {Math.min(currentPage * ITEMS_PER_PAGE, ayahs.length)}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest leading-none mb-1">Current Progress</p>
-                    <p className="font-bold text-sm">Ayahs {(currentPage - 1) * ITEMS_PER_PAGE + 1} - {Math.min(currentPage * ITEMS_PER_PAGE, ayahs.length)}</p>
+                  <div className="bg-primary/5 text-primary px-4 py-2 rounded-xl border border-primary/10">
+                     <span className="text-xs font-black uppercase tracking-widest">Page {currentPage} of {totalPages}</span>
                   </div>
                 </div>
-                <div className="bg-primary/5 text-primary px-4 py-2 rounded-xl border border-primary/10">
-                   <span className="text-xs font-black uppercase tracking-widest">Page {currentPage} of {totalPages}</span>
-                </div>
-              </div>
+              )}
 
               <div className="space-y-8">
                 {readingMode === 'card' ? (
-                  currentAyahs.map((ayah) => (
-                    <AyahCard key={ayah.number} ayah={ayah} showInfo />
-                  ))
+                  <>
+                    {currentAyahs.map((ayah) => (
+                      <AyahCard key={ayah.number} ayah={ayah} showInfo />
+                    ))}
+                    
+                    {/* Card View Pagination */}
+                    {totalPages > 1 && (
+                      <div className="mt-16 py-12 border-t flex justify-center">
+                        <Pagination>
+                          <PaginationContent>
+                            <PaginationItem>
+                              <PaginationPrevious 
+                                href="#" 
+                                onClick={(e) => { e.preventDefault(); if(currentPage > 1) handlePageChange(currentPage - 1)}}
+                                className={cn("cursor-pointer h-12 rounded-xl px-4", currentPage === 1 && "pointer-events-none opacity-50")}
+                              />
+                            </PaginationItem>
+                            
+                            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                              if (
+                                page === 1 || 
+                                page === totalPages || 
+                                (page >= currentPage - 1 && page <= currentPage + 1)
+                              ) {
+                                return (
+                                  <PaginationItem key={page}>
+                                    <PaginationLink 
+                                      href="#" 
+                                      onClick={(e) => { e.preventDefault(); handlePageChange(page)}}
+                                      isActive={currentPage === page}
+                                      className={cn(
+                                        "cursor-pointer h-12 w-12 rounded-xl transition-all font-bold",
+                                        currentPage === page ? "bg-primary text-white shadow-lg shadow-emerald-900/20 border-primary" : "hover:bg-emerald-50 hover:text-primary"
+                                      )}
+                                    >
+                                      {page}
+                                    </PaginationLink>
+                                  </PaginationItem>
+                                );
+                              }
+                              
+                              if (page === currentPage - 2 || page === currentPage + 2) {
+                                return (
+                                  <PaginationItem key={page}>
+                                    <PaginationEllipsis />
+                                  </PaginationItem>
+                                );
+                              }
+                              
+                              return null;
+                            })}
+
+                            <PaginationItem>
+                              <PaginationNext 
+                                href="#" 
+                                onClick={(e) => { e.preventDefault(); if(currentPage < totalPages) handlePageChange(currentPage + 1)}}
+                                className={cn("cursor-pointer h-12 rounded-xl px-4", currentPage === totalPages && "pointer-events-none opacity-50")}
+                              />
+                            </PaginationItem>
+                          </PaginationContent>
+                        </Pagination>
+                      </div>
+                    )}
+                  </>
                 ) : (
-                  <QuranPageView ayahs={currentAyahs} surahName={`Juz ${number}`} />
+                  <QuranPageView ayahs={ayahs} />
                 )}
               </div>
-
-              {/* Improved Pagination with Ellipsis */}
-              {totalPages > 1 && (
-                <div className="mt-16 py-12 border-t flex justify-center">
-                  <Pagination>
-                    <PaginationContent>
-                      <PaginationItem>
-                        <PaginationPrevious 
-                          href="#" 
-                          onClick={(e) => { e.preventDefault(); if(currentPage > 1) handlePageChange(currentPage - 1)}}
-                          className={cn("cursor-pointer h-12 rounded-xl px-4", currentPage === 1 && "pointer-events-none opacity-50")}
-                        />
-                      </PaginationItem>
-                      
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-                        // Display logic for pagination with ellipsis
-                        if (
-                          page === 1 || 
-                          page === totalPages || 
-                          (page >= currentPage - 1 && page <= currentPage + 1)
-                        ) {
-                          return (
-                            <PaginationItem key={page}>
-                              <PaginationLink 
-                                href="#" 
-                                onClick={(e) => { e.preventDefault(); handlePageChange(page)}}
-                                isActive={currentPage === page}
-                                className={cn(
-                                  "cursor-pointer h-12 w-12 rounded-xl transition-all font-bold",
-                                  currentPage === page ? "bg-primary text-white shadow-lg shadow-emerald-900/20 border-primary" : "hover:bg-emerald-50 hover:text-primary"
-                                )}
-                              >
-                                {page}
-                              </PaginationLink>
-                            </PaginationItem>
-                          );
-                        }
-                        
-                        if (page === currentPage - 2 || page === currentPage + 2) {
-                          return (
-                            <PaginationItem key={page}>
-                              <PaginationEllipsis />
-                            </PaginationItem>
-                          );
-                        }
-                        
-                        return null;
-                      })}
-
-                      <PaginationItem>
-                        <PaginationNext 
-                          href="#" 
-                          onClick={(e) => { e.preventDefault(); if(currentPage < totalPages) handlePageChange(currentPage + 1)}}
-                          className={cn("cursor-pointer h-12 rounded-xl px-4", currentPage === totalPages && "pointer-events-none opacity-50")}
-                        />
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
-                </div>
-              )}
             </>
           )}
         </div>

@@ -14,7 +14,8 @@ import {
   Info,
   Clock,
   Compass,
-  Zap
+  Zap,
+  Download
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +25,7 @@ const menuItems = [
   { icon: Layers, label: "Paras/Juz", href: "/para" },
   { icon: Heart, label: "Favorites", href: "/favorites" },
   { icon: Bookmark, label: "Bookmarks", href: "/bookmarks" },
+  { icon: Download, label: "Offline Downloads", href: "/library?tab=downloads" },
   { icon: MessageSquare, label: "Hadith", href: "/hadith" },
   { icon: Zap, label: "Tasbeeh", href: "/tasbeeh" },
   { icon: Clock, label: "Prayer Times", href: "/prayer-times" },
@@ -43,7 +45,7 @@ export const Sidebar = () => {
       <div className="p-6 border-b">
         <h2 className="text-xl font-bold text-primary-green flex items-center gap-2">
           <Book className="h-6 w-6 text-gold" />
-          Al-Quran
+          Nurayn
         </h2>
       </div>
       

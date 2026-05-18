@@ -6,11 +6,14 @@ import { motion } from "framer-motion";
 import { Surah } from "@/types";
 import { cn } from "@/lib/utils";
 
+import { CheckCircle2 } from "lucide-react";
+
 interface SurahCardProps {
   surah: Surah;
+  isDownloaded?: boolean;
 }
 
-export const SurahCard = ({ surah }: SurahCardProps) => {
+export const SurahCard = ({ surah, isDownloaded }: SurahCardProps) => {
   return (
     <motion.div
       whileHover={{ y: -8, scale: 1.02 }}
@@ -29,6 +32,13 @@ export const SurahCard = ({ surah }: SurahCardProps) => {
               <span className="relative font-bold text-base md:text-xl text-primary-green group-hover:text-white transition-colors">
                 {surah.number}
               </span>
+
+              {/* Premium Gold PWA Offline Available badge */}
+              {isDownloaded && (
+                <div className="absolute -top-1.5 -right-1.5 bg-gold rounded-full p-0.5 border-2 border-card shadow-md animate-bounce z-20" title="Available offline">
+                  <CheckCircle2 className="h-3 w-3 text-black stroke-3" />
+                </div>
+              )}
             </div>
             <div className="text-right min-w-0 flex-1 ml-2 md:ml-4">
               <h3 className="font-arabic text-xl md:text-4xl text-primary-green group-hover:text-gold transition-colors duration-300 truncate">

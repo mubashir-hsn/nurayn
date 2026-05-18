@@ -29,9 +29,11 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Al-Quran | Premium Islamic App",
+  title: "Nurayn | Premium Islamic App",
   description: "A complete modern Islamic Quran application with reading, audio, hadith, and more.",
 };
+
+import { PWAProvider } from "@/components/layout/PWAProvider";
 
 export default function RootLayout({
   children,
@@ -54,10 +56,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Footer />
-          <AudioPlayer />
-          <Toaster position="top-center" />
+          <PWAProvider>
+            {children}
+            <Footer />
+            <AudioPlayer />
+            <Toaster position="top-center" />
+          </PWAProvider>
         </ThemeProvider>
       </body>
     </html>

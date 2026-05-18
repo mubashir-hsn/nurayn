@@ -22,7 +22,7 @@ export const Footer = () => {
                 <BookOpen className="h-6 w-6 text-gold" />
               </div>
               <span className="font-black text-xl text-foreground dark:text-primary tracking-tight">
-                Al-Nur <span className="text-gold">Quran</span>
+                Nur<span className="text-gold">ayn</span>
               </span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
@@ -59,14 +59,14 @@ export const Footer = () => {
               <li><Link href="/library" className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">Favorites</Link></li>
               <li><Link href="/library" className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">Bookmarks</Link></li>
               <li><Link href="/settings" className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors">Settings</Link></li>
-              <li><Link href="/about" className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors">About Project</Link></li>
+              <li><Link href="/about" className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors">About us</Link></li>
             </ul>
           </div>
         </div>
 
         <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-xs text-muted-foreground font-medium">
-            © 2026 Al-Nur Quran App. All rights reserved. Built with devotion.
+            © 2026 Nurayn. All rights reserved. Built with devotion.
           </p>
           <Button
             variant="ghost"

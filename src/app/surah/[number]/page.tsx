@@ -196,56 +196,58 @@ export default function SurahDetails({ params }: { params: Promise<{ number: str
 
           <TabsContent value="reading" className="space-y-12 focus-visible:outline-none">
             {readingMode === 'card' ? (
-              <div className="grid grid-cols-1 gap-8">
-                {currentAyahs.map((ayah) => (
-                  <AyahCard key={ayah.number} ayah={ayah} surahName={surah.englishName} />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 gap-8">
+                  {currentAyahs.map((ayah) => (
+                    <AyahCard key={ayah.number} ayah={ayah} surahName={surah.englishName} />
+                  ))}
+                </div>
+
+                {/* Pagination (Only for Card View) */}
+                {totalPages > 1 && (
+                  <div className="mt-16 py-8 border-t flex justify-center">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious 
+                            onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                            className={cn("cursor-pointer", currentPage === 1 && "pointer-events-none opacity-50")}
+                          />
+                        </PaginationItem>
+                        
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                          if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
+                            return (
+                              <PaginationItem key={page}>
+                                <PaginationLink 
+                                  onClick={() => handlePageChange(page)}
+                                  isActive={currentPage === page}
+                                  className="cursor-pointer"
+                                >
+                                  {page}
+                                </PaginationLink>
+                              </PaginationItem>
+                            );
+                          }
+                          if (page === currentPage - 2 || page === currentPage + 2) {
+                            return <PaginationItem key={page}><PaginationEllipsis /></PaginationItem>;
+                          }
+                          return null;
+                        })}
+
+                        <PaginationItem>
+                          <PaginationNext 
+                            onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                            className={cn("cursor-pointer", currentPage === totalPages && "pointer-events-none opacity-50")}
+                          />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+                )}
+              </>
             ) : (
-              <QuranPageView ayahs={currentAyahs} surahName={surah.englishName} />
-            )}
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="mt-16 py-8 border-t flex justify-center">
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious 
-                        onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                        className={cn("cursor-pointer", currentPage === 1 && "pointer-events-none opacity-50")}
-                      />
-                    </PaginationItem>
-                    
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-                      if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
-                        return (
-                          <PaginationItem key={page}>
-                            <PaginationLink 
-                              onClick={() => handlePageChange(page)}
-                              isActive={currentPage === page}
-                              className="cursor-pointer"
-                            >
-                              {page}
-                            </PaginationLink>
-                          </PaginationItem>
-                        );
-                      }
-                      if (page === currentPage - 2 || page === currentPage + 2) {
-                        return <PaginationItem key={page}><PaginationEllipsis /></PaginationItem>;
-                      }
-                      return null;
-                    })}
-
-                    <PaginationItem>
-                      <PaginationNext 
-                        onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-                        className={cn("cursor-pointer", currentPage === totalPages && "pointer-events-none opacity-50")}
-                      />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
-              </div>
+              <QuranPageView ayahs={surah.ayahs} surah={surah} />
             )}
           </TabsContent>
 

@@ -21,8 +21,11 @@ import {
   PaginationEllipsis
 } from "@/components/ui/pagination";
 
+import { getOfflineMetadata } from "@/lib/indexedDB";
+
 export default function SurahPage() {
   const [surahs, setSurahs] = useState<Surah[]>([]);
+  const [downloadedIds, setDownloadedIds] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,8 +34,13 @@ export default function SurahPage() {
   useEffect(() => {
     const fetchSurahs = async () => {
       try {
+        // 1. Fetch Surah index list
         const data = await quranService.getSurahs();
         setSurahs(data);
+
+        // 2. Fetch downloaded IDs for badges
+        const offlineMeta = await getOfflineMetadata();
+        setDownloadedIds(offlineMeta.map(d => d.number));
       } catch (error) {
         console.error("Error fetching surahs", error);
       } finally {
@@ -110,7 +118,10 @@ export default function SurahPage() {
                   exit={{ opacity: 0, scale: 0.9 }}
                   layout
                 >
-                  <SurahCard surah={surah} />
+                  <SurahCard 
+                    surah={surah} 
+                    isDownloaded={downloadedIds.includes(surah.number)} 
+                  />
                 </motion.div>
               ))}
             </AnimatePresence>

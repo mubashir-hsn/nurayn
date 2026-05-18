@@ -24,7 +24,7 @@ export default function AboutPage() {
             <div className="h-20 w-20 bg-white/10 rounded-[2.5rem] backdrop-blur-md flex items-center justify-center mx-auto mb-8 border border-white/20">
               <Sparkles className="h-10 w-10 text-gold" />
             </div>
-            <h1 className="text-5xl md:text-7xl font-black text-white mb-4 tracking-tight">About <span className="text-gold">Al-Nur</span></h1>
+            <h1 className="text-5xl md:text-7xl font-black text-white mb-4 tracking-tight">About Nur<span className="text-gold">ayn</span></h1>
             <p className="text-xl text-white/70 max-w-lg mx-auto font-medium">
               Illuminating the path of guidance through technology and devotion.
             </p>
@@ -41,7 +41,7 @@ export default function AboutPage() {
               <span className="text-xs font-black text-gold uppercase tracking-[0.3em]">Our Mission</span>
               <h2 className="text-4xl font-black text-foreground leading-tight">Spreading the Message of Peace & Guidance</h2>
               <p className="text-muted-foreground leading-relaxed font-medium">
-                Al-Nur Quran is dedicated to providing a high-fidelity, modern platform for engaging with the Word of Allah. Our goal is to make Quranic study accessible, beautiful, and deeply integrated into your daily life.
+                Nurayn is dedicated to providing a high-fidelity, modern platform for engaging with the Word of Allah. Our goal is to make Quranic study accessible, beautiful, and deeply integrated into your daily life.
               </p>
             </div>
             <div className="bg-emerald-50 dark:bg-emerald-950/20 rounded-[3rem] p-12 aspect-square flex items-center justify-center border border-emerald-100 dark:border-emerald-900/20">
@@ -80,7 +80,7 @@ export default function AboutPage() {
             <Heart className="h-16 w-16 mx-auto text-gold fill-current" />
             <h2 className="text-4xl font-black tracking-tight">Support Our Journey</h2>
             <p className="text-lg text-white/80 max-w-xl mx-auto font-medium">
-              This project is a Sadqah Jariyah initiative. If you find value in Al-Nur, please remember us in your Duas and share the application with others.
+              This project is a Sadqah Jariyah initiative. If you find value in Nurayn, please remember us in your Duas and share the application with others.
             </p>
           </section>
 

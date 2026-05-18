@@ -27,6 +27,62 @@ export default function HomePage() {
   const { recentlyRead } = useReadingStore();
   const lastRead = recentlyRead[0];
 
+  const [lastReadSession, setLastReadSession] = useState<{
+    type: 'surah' | 'para';
+    number: number;
+    name: string;
+    arabicName: string;
+    ayahNum: number;
+    juzNum: number;
+  } | null>(null);
+
+  useEffect(() => {
+    const loadLastReadSession = () => {
+      const type = localStorage.getItem("global_last_read_type") as 'surah' | 'para' | null;
+      if (type === 'surah') {
+        const surahNum = parseInt(localStorage.getItem("global_last_read_surah_num") || "1");
+        const name = localStorage.getItem("global_last_read_surah_name") || "Al-Faatiha";
+        const arabicName = localStorage.getItem("global_last_read_surah_arabic") || "الفاتحة";
+        const ayahNum = parseInt(localStorage.getItem("global_last_read_ayah_num") || "1");
+        const juzNum = parseInt(localStorage.getItem("global_last_read_juz") || "1");
+        
+        setLastReadSession({
+          type: 'surah',
+          number: surahNum,
+          name,
+          arabicName,
+          ayahNum,
+          juzNum
+        });
+      } else if (type === 'para') {
+        const juzNum = parseInt(localStorage.getItem("global_last_read_juz") || "1");
+        const name = `Para ${juzNum}`;
+        const ayahNum = parseInt(localStorage.getItem("global_last_read_ayah_num") || "1");
+        const surahName = localStorage.getItem("global_last_read_surah_name") || "Al-Faatiha";
+        
+        setLastReadSession({
+          type: 'para',
+          number: juzNum,
+          name,
+          arabicName: `Juz ${juzNum}`,
+          ayahNum,
+          juzNum
+        });
+      } else {
+        // Fallback to Al-Fatihah
+        setLastReadSession({
+          type: 'surah',
+          number: 1,
+          name: "Al-Faatiha",
+          arabicName: "الفاتحة",
+          ayahNum: 1,
+          juzNum: 1
+        });
+      }
+    };
+    loadLastReadSession();
+  }, []);
+
   useEffect(() => {
     const fetchPopular = async () => {
       const fallbackPopular = [
@@ -94,9 +150,14 @@ export default function HomePage() {
               </div>
               <CardContent className="p-8 relative z-10">
                 <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em] mb-4">Continue Reading</p>
-                <h3 className="text-3xl font-bold mb-1">{lastRead?.englishName || "Al-Faatiha"}</h3>
-                <p className="text-white/60 text-sm mb-8">Ayah 1 • Juz 1</p>
-                <Link href={`/surah/${lastRead?.number || 1}`}>
+                <h3 className="text-3xl font-bold mb-1">{lastReadSession?.name || "Al-Faatiha"}</h3>
+                <p className="text-white/60 text-sm mb-8">
+                  {lastReadSession?.type === 'surah'
+                    ? `Ayah ${lastReadSession?.ayahNum || 1} • Juz ${lastReadSession?.juzNum || 1}`
+                    : `Juz ${lastReadSession?.juzNum || 1} • Ayah ${lastReadSession?.ayahNum || 1}`
+                  }
+                </p>
+                <Link href={lastReadSession?.type === 'para' ? `/para/${lastReadSession?.number || 1}` : `/surah/${lastReadSession?.number || 1}`}>
                   <Button className="w-full bg-[#EAB308] hover:bg-[#CA8A04] text-foreground dark:text-primary font-black rounded-xl h-14 shadow-lg shadow-yellow-600/20">
                     Resume Recitation
                   </Button>
